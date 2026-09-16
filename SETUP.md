@@ -1,0 +1,113 @@
+# Set up the TZH Sports Centre MCP workspace
+
+Keep this Git repository intact. It contains:
+
+```text
+tzh-sports-centre-mcp/
+├── AGENTS.md
+├── SETUP.md
+└── .agents/
+    └── skills/
+        └── tzh-student-account-audit/
+            └── SKILL.md
+```
+
+`AGENTS.md` supplies instructions for every task started from this workspace.
+Codex discovers the skill from `.agents/skills`; it reads the full `SKILL.md`
+only when the request matches the skill or you invoke
+`$tzh-student-account-audit` explicitly. A loose file named `skills.md` is not
+the Codex skill format.
+
+## 1. Store the bearer token on macOS
+
+TZH supplies the token separately through a secure channel. Never save it in
+this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or source control.
+
+In Terminal, capture it without displaying it:
+
+```zsh
+read -s "TZH_SPORTS_CENTRE_MCP_TOKEN?Paste the TZH token (hidden): "
+echo
+export TZH_SPORTS_CENTRE_MCP_TOKEN
+launchctl setenv TZH_SPORTS_CENTRE_MCP_TOKEN "$TZH_SPORTS_CENTRE_MCP_TOKEN"
+unset TZH_SPORTS_CENTRE_MCP_TOKEN
+```
+
+Fully quit Codex after changing the environment. The value may need to be set
+again after logout or restart. To remove it later:
+
+```zsh
+launchctl unsetenv TZH_SPORTS_CENTRE_MCP_TOKEN
+```
+
+Do not run `launchctl getenv TZH_SPORTS_CENTRE_MCP_TOKEN` while screen sharing;
+it prints the secret.
+
+## 2. Configure the MCP connection
+
+Add this block to `~/.codex/config.toml`, replacing only the domain placeholder:
+
+```toml
+[mcp_servers.tzh_sports_centre]
+url = "https://YOUR-TZH-DOMAIN/api/mcp"
+bearer_token_env_var = "TZH_SPORTS_CENTRE_MCP_TOKEN"
+required = false
+startup_timeout_sec = 10
+tool_timeout_sec = 60
+default_tools_approval_mode = "writes"
+```
+
+The server is optional so a temporary outage does not prevent Codex from
+starting. Do not add an `enabled_tools` list: the shared endpoint can publish
+new reviewed TZH tools without requiring another configuration edit. Server-side
+authorization remains authoritative.
+
+For a TZH-owner local test only, the URL may temporarily be:
+
+```text
+http://localhost:3000/api/mcp
+```
+
+A customer using the deployed service must use its public HTTPS URL.
+
+## 3. Create the Codex project
+
+1. Fully quit and reopen Codex.
+2. Create a local Codex project or edit an existing project.
+3. Add this entire `tzh-sports-centre-mcp` folder.
+4. Set it as the project's main folder.
+5. Start a new task from that project.
+
+The main folder matters: Codex uses it as the default location for discovering
+project `AGENTS.md`, `.agents/skills`, and project configuration.
+
+## 4. Verify discovery
+
+1. Enter `/mcp` and confirm `tzh_sports_centre` is enabled and authenticated.
+2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit` appears.
+3. Run this read-only smoke test with a safe search value:
+
+```text
+Use $tzh-student-account-audit and call search_student_accounts from
+tzh_sports_centre with {"query":"EXAMPLE NAME OR EMAIL"}. Do not create or
+modify anything.
+```
+
+The expected result is a bounded list of matching active students or an empty
+list. If several students match, continue only after choosing by stable student
+ID.
+
+## 5. Troubleshooting and updates
+
+- If the server is absent, check the exact URL, environment variable name, and
+  `[mcp_servers.tzh_sports_centre]` table, then fully restart Codex.
+- If the skill is absent, confirm the hidden `.agents` directory was included,
+  the file is exactly `.agents/skills/tzh-student-account-audit/SKILL.md`, and
+  this folder is the project's main folder. Start a new task after correcting it.
+- Never paste a token into chat while troubleshooting. Ask TZH to revoke and
+  replace any token that may have been exposed.
+- To receive updated instructions or new skills, first confirm that
+  `git status --short` is empty, then run `git pull --ff-only` from this
+  repository's root. Do not discard unexpected local changes; ask TZH for help
+  instead. After a successful pull, fully restart Codex and start a new task so
+  it discovers the updated `AGENTS.md` and skills.
