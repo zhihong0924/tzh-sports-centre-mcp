@@ -102,6 +102,15 @@ from a draft and `delete_student_audit_case` for permanently deleting a draft
 or rejected case. Both require explicit confirmation and cannot reverse a
 committed case.
 
+During an audit, Codex should explain the completed stage and guide the next
+choice—for example, after case creation it should ask which lesson, payment,
+correction, or proof to add. It may continue draft work already requested with
+complete inputs, but it must always show a successful review and request
+separate approval for that exact validation version before commit. The review
+includes the case and entry details, evidence-image counts, and the same
+current/change/projected fee and replacement calculation shown by the web
+workspace. It does not display or inspect the private proof images.
+
 ## 5. Troubleshooting and updates
 
 - If the server is absent, check the exact URL, environment variable name, and

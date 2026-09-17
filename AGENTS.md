@@ -40,11 +40,19 @@ MCP server. These rules apply to every task started from this folder.
   rejected case. Show the exact target and obtain explicit confirmation before
   either destructive call. Neither action can undo a committed case.
 - Review validates a versioned preview but does not apply canonical changes.
+  Show its case details, every entry and entry detail, per-entry attached
+  evidence-image count, canonical/current account position, audit fee and
+  replacement changes, projected position, warnings, and errors. An evidence
+  count confirms attachment only; never claim to have inspected the image.
 - Commit is consequential. Call the commit tool only after showing the complete
   preview and receiving explicit approval for that exact validation version.
 - Requests such as "continue", "finish", or "do the rest" are not approval to
   commit. If the reviewed version changes, review again and request approval
   again.
+- Guide the administrator through the staged workflow. After a completed stage,
+  continue already-requested safe draft work when all facts are available;
+  otherwise summarize the result and ask one focused question naming the valid
+  next actions. Do not use a generic next-step question as evidence of approval.
 
 ## Failures and reporting
 

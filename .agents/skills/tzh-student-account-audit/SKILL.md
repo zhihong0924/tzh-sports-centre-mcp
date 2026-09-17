@@ -48,12 +48,42 @@ is unavailable, stop and report the connection problem.
    confirmation, then call `remove_student_audit_entry`. To abandon the whole
    draft, show its case ID, obtain explicit confirmation, then call
    `delete_student_audit_case`. Never use either tool to undo a committed case.
-8. Review after all intended entries are saved. Show the complete preview,
-   every warning and error, and the exact validation version. State clearly
-   that canonical data is still unchanged.
+8. Review after all intended entries are saved. Show the case details, every
+   entry and its details, each attached evidence-image count, the canonical
+   account position, audit fee/replacement changes, projected position, every
+   warning and error, and the exact validation version. State clearly that
+   canonical data is still unchanged. Evidence counts confirm attachment only;
+   do not claim to have inspected or interpreted the private images.
 9. Commit only after the user explicitly approves that exact preview and
    version. Pass `confirm: true` and the reviewed validation version. Never
    silently review a newer version and commit it under earlier approval.
+
+## Guide the next step
+
+After each completed stage, briefly state the outcome and whether canonical
+student data changed. If the user already requested additional safe draft work
+and supplied everything needed, continue it. Otherwise end with one focused
+question based on the current state:
+
+- After search, ask the user to choose or confirm the stable student ID and the
+  intended year/date range.
+- After case creation, ask which historical lesson, fee payment, correction, or
+  proof image to add first.
+- After proof upload, ask which entry the proof supports or whether to upload
+  another proof.
+- After adding or removing an entry, ask whether to continue authoring, manage
+  proof, or review the complete case.
+- After a failed review, show every error and ask which draft entry to correct
+  or remove. Never invent the correction.
+- After a successful review, show the complete web-equivalent account-effect
+  preview and exact validation version, then ask whether the user explicitly approves committing that exact
+  version or wants to stop. This question is not approval.
+- After commit, report completion and ask whether to start another audit or
+  finish.
+
+Do not ask a vague “What next?” when the valid choices can be named. Do not
+infer missing facts, select a student, remove data, delete a case, or commit
+from silence or from a generic request to continue.
 
 ## Entry rules
 
