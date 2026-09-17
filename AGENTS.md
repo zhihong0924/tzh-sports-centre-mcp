@@ -34,6 +34,10 @@ MCP server. These rules apply to every task started from this folder.
 - Confirm the selected student and date range before creating an audit case.
 - Draft cases, proof uploads, and draft entries are reversible writes. Describe
   them as drafts and use stable idempotency keys for retries.
+- For an existing case, confirm the student and call
+  `list_student_audit_cases`. Use a uniquely matching case ID internally. If
+  several cases remain plausible, ask the administrator to choose by readable
+  case name, date range, and status; never ask them to retrieve an internal ID.
 - An audit case can contain multiple audit entries. Use
   `remove_student_audit_entry` for the web-equivalent **Remove** action on one
   draft entry, and `delete_student_audit_case` to permanently delete a draft or

@@ -102,6 +102,11 @@ from a draft and `delete_student_audit_case` for permanently deleting a draft
 or rejected case. Both require explicit confirmation and cannot reverse a
 committed case.
 
+For an existing audit, Codex uses `list_student_audit_cases` after confirming
+the student. It resolves a unique case name/date match internally; if more than
+one case is plausible, it asks you to choose from readable case details instead
+of asking for an internal case ID.
+
 During an audit, Codex should explain the completed stage and guide the next
 choice—for example, after case creation it should ask which lesson, payment,
 correction, or proof to add. It may continue draft work already requested with

@@ -12,6 +12,8 @@ is unavailable, stop and report the connection problem.
 ## Available tools
 
 - `search_student_accounts`: read-only search by name, email, or phone.
+- `list_student_audit_cases`: list one confirmed student's bounded open cases
+  by human-readable name, date range, status, and entry/evidence counts.
 - `create_student_audit_case`: create a reversible draft for one confirmed
   student and a calendar year or explicit date range.
 - `upload_student_audit_proof_image`: upload one private JPEG, PNG, or WebP
@@ -32,29 +34,36 @@ is unavailable, stop and report the connection problem.
 1. Search for the student even when the user supplies a name, email, or phone.
    Show the matching name and stable student ID. Stop on no match; ask the user
    to choose when more than one plausible record matches.
-2. Before creating a case, confirm the stable student ID, case name, and either
+2. When the request concerns an existing case, call
+   `list_student_audit_cases` after confirming the student. Match the user's
+   words against case name, date range, and status. If exactly one case is an
+   unambiguous match, use its case ID internally and continue the requested
+   action. If multiple cases remain plausible, show their readable details and
+   ask which one they mean. Never ask the user to remember or copy a case ID.
+3. For new work, before creating a case, confirm the stable student ID, case name, and either
    the calendar year or inclusive `YYYY-MM-DD` date range.
-3. Create the draft with a unique idempotency key. Preserve the returned case
+4. Create the new draft with a unique idempotency key. Preserve the returned case
    ID for later calls.
-4. Upload each proof image separately with its own idempotency key. Preserve
+5. Upload each proof image separately with its own idempotency key. Preserve
    the returned proof ID and attach it only to an entry or lesson exception in
    the same case.
-5. Add one draft entry at a time. Confirm missing dates, amounts, weekday
+6. Add one draft entry at a time. Confirm missing dates, amounts, weekday
    patterns, attendance statuses, descriptions, and correction signs instead
    of inventing them. Monetary inputs use integer cents.
-6. Reuse the same idempotency key only when retrying the same logical write
+7. Reuse the same idempotency key only when retrying the same logical write
    after an uncertain response. Use a new key for a different write.
-7. If an entry is wrong, show its case ID and entry ID, obtain explicit
-   confirmation, then call `remove_student_audit_entry`. To abandon the whole
-   draft, show its case ID, obtain explicit confirmation, then call
+8. If an entry is wrong, show its human-readable case and entry details, obtain
+   explicit confirmation, then call `remove_student_audit_entry` with the IDs
+   already resolved by the tools. To abandon the whole draft, show its case
+   name/date range, obtain explicit confirmation, then call
    `delete_student_audit_case`. Never use either tool to undo a committed case.
-8. Review after all intended entries are saved. Show the case details, every
+9. Review after all intended entries are saved. Show the case details, every
    entry and its details, each attached evidence-image count, the canonical
    account position, audit fee/replacement changes, projected position, every
    warning and error, and the exact validation version. State clearly that
    canonical data is still unchanged. Evidence counts confirm attachment only;
    do not claim to have inspected or interpreted the private images.
-9. Commit only after the user explicitly approves that exact preview and
+10. Commit only after the user explicitly approves that exact preview and
    version. Pass `confirm: true` and the reviewed validation version. Never
    silently review a newer version and commit it under earlier approval.
 
