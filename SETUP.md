@@ -106,6 +106,11 @@ ID.
   this folder is the project's main folder. Start a new task after correcting it.
 - Never paste a token into chat while troubleshooting. Ask TZH to revoke and
   replace any token that may have been exposed.
+- If an approved `commit_student_audit_case` call times out, report the timeout
+  and retry only the exact same case ID and approved validation version. That
+  retry is safe and does not repeat canonical records, invoices, or emails.
+  Never substitute a newer validation version without a new review and explicit
+  approval.
 - To receive updated instructions or new skills, first confirm that
   `git status --short` is empty, then run `git pull --ff-only` from this
   repository's root. Do not discard unexpected local changes; ask TZH for help

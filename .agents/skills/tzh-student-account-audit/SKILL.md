@@ -67,8 +67,10 @@ is unavailable, stop and report the connection problem.
   or committed.
 - Include stable student, case, entry, and proof IDs only when needed for the
   next step. Never include credentials.
-- Surface tool errors faithfully. For an uncertain commit result, inspect case
-  state before suggesting any retry.
+- Surface tool errors faithfully. For an uncertain commit result, retry only
+  the exact same case ID and explicitly approved validation version. Never use
+  a newer version without a new review and approval.
 - HTTP 413 means the proof request exceeded the platform payload limit; ask for
-  a smaller image. HTTP 504 means the function timed out; report it and inspect
-  case state before retrying.
+  a smaller image. HTTP 504 means the function timed out; report it. Retrying
+  the exact approved commit is safe and does not repeat canonical records,
+  invoices, or emails.

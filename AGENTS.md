@@ -46,7 +46,9 @@ MCP server. These rules apply to every task started from this folder.
 - Report the MCP tool used and distinguish read-only, draft, reviewed, and
   committed outcomes.
 - Preserve stable IDs needed for later steps, but never include credentials.
-- Report MCP and HTTP errors faithfully. Never blindly retry a commit after an
-  uncertain result; inspect the case state first.
-- For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout
-  and inspect case state before proposing a retry.
+- Report MCP and HTTP errors faithfully. After an uncertain commit result,
+  retry only the exact same case ID and explicitly approved validation version;
+  never substitute a newer version without a new review and approval.
+- For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout;
+  an exact approved commit retry is safe and does not repeat canonical records,
+  invoices, or emails.
