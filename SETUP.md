@@ -114,7 +114,8 @@ complete inputs, but it must always show a successful review and request
 separate approval for that exact validation version before commit. The review
 includes the case and entry details, evidence-image counts, and the same
 current/change/projected fee and replacement calculation shown by the web
-workspace. It does not display or inspect the private proof images.
+workspace. It does not display or inspect the private proof images. All review
+amounts are displayed in RM rather than cents.
 
 ## 5. Troubleshooting and updates
 

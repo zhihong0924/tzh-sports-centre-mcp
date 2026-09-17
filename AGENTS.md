@@ -48,6 +48,7 @@ MCP server. These rules apply to every task started from this folder.
   evidence-image count, canonical/current account position, audit fee and
   replacement changes, projected position, warnings, and errors. An evidence
   count confirms attachment only; never claim to have inspected the image.
+  Present all administrator-facing money as formatted RM, not cents.
 - Commit is consequential. Call the commit tool only after showing the complete
   preview and receiving explicit approval for that exact validation version.
 - Requests such as "continue", "finish", or "do the rest" are not approval to

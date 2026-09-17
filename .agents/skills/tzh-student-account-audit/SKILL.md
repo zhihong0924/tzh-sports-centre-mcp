@@ -62,7 +62,8 @@ is unavailable, stop and report the connection problem.
    account position, audit fee/replacement changes, projected position, every
    warning and error, and the exact validation version. State clearly that
    canonical data is still unchanged. Evidence counts confirm attachment only;
-   do not claim to have inspected or interpreted the private images.
+   do not claim to have inspected or interpreted the private images. Present
+   every monetary value using the tool's formatted RM fields, never cents.
 10. Commit only after the user explicitly approves that exact preview and
    version. Pass `confirm: true` and the reviewed validation version. Never
    silently review a newer version and commit it under earlier approval.
