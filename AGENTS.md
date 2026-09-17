@@ -34,6 +34,11 @@ MCP server. These rules apply to every task started from this folder.
 - Confirm the selected student and date range before creating an audit case.
 - Draft cases, proof uploads, and draft entries are reversible writes. Describe
   them as drafts and use stable idempotency keys for retries.
+- An audit case can contain multiple audit entries. Use
+  `remove_student_audit_entry` for the web-equivalent **Remove** action on one
+  draft entry, and `delete_student_audit_case` to permanently delete a draft or
+  rejected case. Show the exact target and obtain explicit confirmation before
+  either destructive call. Neither action can undo a committed case.
 - Review validates a versioned preview but does not apply canonical changes.
 - Commit is consequential. Call the commit tool only after showing the complete
   preview and receiving explicit approval for that exact validation version.

@@ -97,6 +97,11 @@ The expected result is a bounded list of matching active students or an empty
 list. If several students match, continue only after choosing by stable student
 ID.
 
+The catalogue also includes `remove_student_audit_entry` for removing one entry
+from a draft and `delete_student_audit_case` for permanently deleting a draft
+or rejected case. Both require explicit confirmation and cannot reverse a
+committed case.
+
 ## 5. Troubleshooting and updates
 
 - If the server is absent, check the exact URL, environment variable name, and

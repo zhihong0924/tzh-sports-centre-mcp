@@ -1,6 +1,6 @@
 ---
 name: tzh-student-account-audit
-description: Use the tzh_sports_centre MCP tools to find students and prepare, review, or commit historical student-account audit cases. Trigger for student lookup, historical lesson or payment reconciliation, proof images, fee corrections, replacement corrections, and audit case review or commit.
+description: Use the tzh_sports_centre MCP tools to find students and prepare, remove entries from, delete, review, or commit historical student-account audit cases. Trigger for student lookup, historical lesson or payment reconciliation, proof images, fee corrections, replacement corrections, draft cleanup, and audit case review or commit.
 ---
 
 # TZH Student Account Audit
@@ -18,6 +18,10 @@ is unavailable, stop and report the connection problem.
   proof image, up to 3 MiB decoded, to a confirmed draft case.
 - `add_student_audit_entry`: add one reversible historical lesson, payment,
   fee-correction, or replacement-correction draft entry.
+- `remove_student_audit_entry`: remove one confirmed entry from a draft case
+  and clean up proof images no longer used by another entry.
+- `delete_student_audit_case`: permanently delete a draft or rejected case and
+  its owned proof images.
 - `review_student_audit_case`: validate the draft and return its deterministic
   preview and validation version without applying it.
 - `commit_student_audit_case`: apply an explicitly approved reviewed version
@@ -40,10 +44,14 @@ is unavailable, stop and report the connection problem.
    of inventing them. Monetary inputs use integer cents.
 6. Reuse the same idempotency key only when retrying the same logical write
    after an uncertain response. Use a new key for a different write.
-7. Review after all intended entries are saved. Show the complete preview,
+7. If an entry is wrong, show its case ID and entry ID, obtain explicit
+   confirmation, then call `remove_student_audit_entry`. To abandon the whole
+   draft, show its case ID, obtain explicit confirmation, then call
+   `delete_student_audit_case`. Never use either tool to undo a committed case.
+8. Review after all intended entries are saved. Show the complete preview,
    every warning and error, and the exact validation version. State clearly
    that canonical data is still unchanged.
-8. Commit only after the user explicitly approves that exact preview and
+9. Commit only after the user explicitly approves that exact preview and
    version. Pass `confirm: true` and the reviewed validation version. Never
    silently review a newer version and commit it under earlier approval.
 
