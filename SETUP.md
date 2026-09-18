@@ -20,8 +20,11 @@ the Codex skill format.
 
 ## 1. Store the bearer token on macOS
 
-TZH supplies the token separately through a secure channel. Never save it in
-this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or source control.
+TZH supplies the token separately through a secure channel. A TZH administrator
+normally creates a separately named, independently revocable token from the
+website's **MCP Access Tokens** workspace; its plaintext is shown only once.
+Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
+source control.
 
 In Terminal, capture it without displaying it:
 

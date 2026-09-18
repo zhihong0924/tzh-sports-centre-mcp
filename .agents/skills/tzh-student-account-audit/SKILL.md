@@ -113,6 +113,10 @@ from silence or from a generic request to continue.
 
 - State which tool ran and whether the outcome was read-only, draft, reviewed,
   or committed.
+- If authentication fails because a credential expired or was revoked, ask the
+  user to obtain a replacement from TZH. Never ask them to paste it into chat;
+  TZH creates replacements in the website's MCP Access Tokens workspace and
+  sends the plaintext separately through a secure channel.
 - Include stable student, case, entry, and proof IDs only when needed for the
   next step. Never include credentials.
 - Surface tool errors faithfully. For an uncertain commit result, retry only
