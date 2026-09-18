@@ -106,6 +106,10 @@ from silence or from a generic request to continue.
   or decreases the account balance.
 - Replacement corrections require a non-zero signed quantity. Confirm whether
   the correction adds or removes replacements.
+- Committed replacement obligations are lifetime credits. Tell the
+  administrator that committing the audit records the obligation; an admin
+  must separately book a future lesson to redeem it, and ordinary live-token
+  expiry does not apply.
 - Chat-derived facts remain drafts until the reviewed version is explicitly
   approved and committed.
 

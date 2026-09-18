@@ -120,6 +120,10 @@ current/change/projected fee and replacement calculation shown by the web
 workspace. It does not display or inspect the private proof images. All review
 amounts are displayed in RM rather than cents.
 
+Committed audit replacement obligations remain lifetime credits. The normal
+live absence-token expiry does not apply; redemption is completed by an admin
+through the website's replacement-booking workflow.
+
 ## 5. Troubleshooting and updates
 
 - If the server is absent, check the exact URL, environment variable name, and

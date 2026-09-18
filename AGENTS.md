@@ -61,6 +61,10 @@ MCP server. These rules apply to every task started from this folder.
   continue already-requested safe draft work when all facts are available;
   otherwise summarize the result and ask one focused question naming the valid
   next actions. Do not use a generic next-step question as evidence of approval.
+- Replacement obligations created by a committed audit are lifetime credits,
+  not expiring live absence tokens. They are redeemed by an administrator in
+  the website's replacement-booking workflow; do not describe them as already
+  redeemed merely because the audit was committed.
 
 ## Failures and reporting
 
