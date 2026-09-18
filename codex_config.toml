@@ -1,0 +1,7 @@
+[mcp_servers.tzh_sports_centre]
+url = "https://tzhsports.vercel.app/api/mcp"
+http_headers = { "Authorization" = "Bearer tzh_mcp_<token>" }
+required = false
+enabled = true
+startup_timeout_sec = 5
+tool_timeout_sec = 60
