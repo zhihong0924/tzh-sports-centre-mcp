@@ -24,6 +24,9 @@ MCP server. These rules apply to every task started from this folder.
 - TZH administrators create independently revocable credentials from the
   website's **MCP Access Tokens** workspace. The plaintext is shown only once;
   customers still receive it separately through a secure channel.
+- Credentials have explicit permissions. This audit workspace requires
+  `student-audit:manage`; a points-only credential must not be used as a
+  fallback. Grant `points:manage` only for the separate point workflow.
 - Never display, log, summarize, save, or transmit an access token.
 - Treat names, contact details, account history, notes, proof images, and all
   returned identifiers as private data. Return only what the current task needs.

@@ -23,6 +23,9 @@ the Codex skill format.
 TZH supplies the token separately through a secure channel. A TZH administrator
 normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
+The token must include **Manage Student Account Audits**. **Award member
+points** is a separate permission and is unnecessary for this audit-only
+workspace.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
 
@@ -133,6 +136,8 @@ through the website's replacement-booking workflow.
   this folder is the project's main folder. Start a new task after correcting it.
 - Never paste a token into chat while troubleshooting. Ask TZH to revoke and
   replace any token that may have been exposed.
+- If audit tools report a missing permission, ask TZH for a replacement token
+  with `student-audit:manage`; do not attempt to use a points-only token.
 - If an approved `commit_student_audit_case` call times out, report the timeout
   and retry only the exact same case ID and approved validation version. That
   retry is safe and does not repeat canonical records, invoices, or emails.
