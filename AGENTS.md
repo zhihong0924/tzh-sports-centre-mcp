@@ -8,6 +8,9 @@ MCP server. These rules apply to every task started from this folder.
 - Use only tools from `tzh_sports_centre` to read or change private TZH data.
 - For student lookup or historical account reconciliation, use the
   `tzh-student-account-audit` skill and follow its staged workflow.
+- For positive member point awards, use the `tzh-point-assignment` skill and
+  follow its preview-before-confirmation workflow. Deductions and fee reminders
+  are outside that skill.
 - Never query PostgreSQL, Prisma, application source code, internal HTTP APIs,
   or repository scripts as an alternative way to access TZH data.
 - Never use shell commands as a fallback for private data. A failed local shell
@@ -57,6 +60,10 @@ MCP server. These rules apply to every task started from this folder.
   Present all administrator-facing money as formatted RM, not cents.
 - Commit is consequential. Call the commit tool only after showing the complete
   preview and receiving explicit approval for that exact validation version.
+- Point assignment is also consequential. Show the complete signed preview and
+  call `commit_points_assignment` only after explicit approval, using the exact
+  opaque preview token. Never broaden an audit-only credential into point
+  authority.
 - Requests such as "continue", "finish", or "do the rest" are not approval to
   commit. If the reviewed version changes, review again and request approval
   again.

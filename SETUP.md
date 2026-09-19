@@ -8,15 +8,17 @@ tzh-sports-centre-mcp/
 ├── SETUP.md
 └── .agents/
     └── skills/
-        └── tzh-student-account-audit/
+        ├── tzh-student-account-audit/
+        │   └── SKILL.md
+        └── tzh-point-assignment/
             └── SKILL.md
 ```
 
 `AGENTS.md` supplies instructions for every task started from this workspace.
 Codex discovers the skill from `.agents/skills`; it reads the full `SKILL.md`
-only when the request matches the skill or you invoke
-`$tzh-student-account-audit` explicitly. A loose file named `skills.md` is not
-the Codex skill format.
+only when the request matches a skill or you invoke
+`$tzh-student-account-audit` or `$tzh-point-assignment` explicitly. A loose
+file named `skills.md` is not the Codex skill format.
 
 ## 1. Store the bearer token on macOS
 
@@ -90,7 +92,8 @@ project `AGENTS.md`, `.agents/skills`, and project configuration.
 ## 4. Verify discovery
 
 1. Enter `/mcp` and confirm `tzh_sports_centre` is enabled and authenticated.
-2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit` appears.
+2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit` and
+   `tzh-point-assignment` appear.
 3. Run this read-only smoke test with a safe search value:
 
 ```text
@@ -102,6 +105,18 @@ modify anything.
 The expected result is a bounded list of matching active students or an empty
 list. If several students match, continue only after choosing by stable student
 ID.
+
+For a point-enabled token, run a second read-only smoke test:
+
+```text
+Use $tzh-point-assignment and call list_active_point_policies from
+tzh_sports_centre. Do not preview or commit an assignment.
+```
+
+Point assignment uses `search_point_members`, `list_active_point_policies`,
+`preview_points_assignment`, and `commit_points_assignment`. The preview writes
+nothing and must be shown in full. Commit requires explicit approval and the
+exact opaque preview token. This workflow awards positive points only.
 
 The catalogue also includes `remove_student_audit_entry` for removing one entry
 from a draft and `delete_student_audit_case` for permanently deleting a draft
