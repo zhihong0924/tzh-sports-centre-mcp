@@ -3,6 +3,22 @@
 This folder is an administration workspace for the private `tzh_sports_centre`
 MCP server. These rules apply to every task started from this folder.
 
+## Development workflow
+
+- Autonomous work selected from the application repository's
+  `DEVELOPMENT_TASKS.md` follows its `docs/autonomous-development.md` runbook.
+- When a task records `MCP impact: Required`, make feature-dependent changes in
+  the recorded MCP branch and worktree. Keep this repository's root checkout on
+  `main`, and keep task status in the application queue rather than duplicating
+  it here.
+- This workspace has no task database. Do not clone the application database,
+  copy its `.env`, or add credentials for branch development.
+- Commit application and MCP changes separately. Do not publish customer
+  instructions for a tool contract that has not been integrated and deployed.
+- Independent corrections that describe the currently deployed server may use
+  the normal repository workflow; scheduled queue work must use its recorded
+  branch and worktree.
+
 ## Required integration boundary
 
 - Use only tools from `tzh_sports_centre` to read or change private TZH data.
