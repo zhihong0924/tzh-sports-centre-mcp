@@ -10,24 +10,27 @@ tzh-sports-centre-mcp/
     └── skills/
         ├── tzh-student-account-audit/
         │   └── SKILL.md
-        └── tzh-point-assignment/
+        ├── tzh-point-assignment/
+        │   └── SKILL.md
+        └── tzh-lesson-management/
             └── SKILL.md
 ```
 
 `AGENTS.md` supplies instructions for every task started from this workspace.
 Codex discovers the skill from `.agents/skills`; it reads the full `SKILL.md`
 only when the request matches a skill or you invoke
-`$tzh-student-account-audit` or `$tzh-point-assignment` explicitly. A loose
-file named `skills.md` is not the Codex skill format.
+`$tzh-student-account-audit`, `$tzh-point-assignment`, or
+`$tzh-lesson-management` explicitly. A loose file named `skills.md` is not the
+Codex skill format.
 
 ## 1. Store the bearer token on macOS
 
 TZH supplies the token separately through a secure channel. A TZH administrator
 normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
-The token must include **Manage Student Account Audits**. **Award member
-points** is a separate permission and is unnecessary for this audit-only
-workspace.
+The token must include the permissions needed by the intended workflow.
+**Manage Student Account Audits**, **Award member points**, and **Manage lesson
+duration and price** are independent permissions; grant only those required.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
 
@@ -92,8 +95,8 @@ project `AGENTS.md`, `.agents/skills`, and project configuration.
 ## 4. Verify discovery
 
 1. Enter `/mcp` and confirm `tzh_sports_centre` is enabled and authenticated.
-2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit` and
-   `tzh-point-assignment` appear.
+2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit`,
+   `tzh-point-assignment`, and `tzh-lesson-management` appear.
 3. Run this read-only smoke test with a safe search value:
 
 ```text
@@ -117,6 +120,20 @@ Point assignment uses `search_point_members`, `list_active_point_policies`,
 `preview_points_assignment`, and `commit_points_assignment`. The preview writes
 nothing and must be shown in full. Commit requires explicit approval and the
 exact opaque preview token. This workflow awards positive points only.
+
+For a lesson-management token, run a read-only discovery smoke test:
+
+```text
+Use $tzh-lesson-management and call find_manageable_lessons from
+tzh_sports_centre for a small YYYY-MM-DD date range. Do not preview or commit
+anything.
+```
+
+Lesson management uses `find_manageable_lessons`,
+`preview_lesson_management_batch`, and `commit_lesson_management_batch`.
+Preview is read-only and must be shown in full. Commit requires literal
+approval of that exact preview, `confirm: true`, and a stable idempotency key.
+Any rejected batch changes no lessons.
 
 The catalogue also includes `remove_student_audit_entry` for removing one entry
 from a draft and `delete_student_audit_case` for permanently deleting a draft
@@ -153,6 +170,9 @@ through the website's replacement-booking workflow.
   replace any token that may have been exposed.
 - If audit tools report a missing permission, ask TZH for a replacement token
   with `student-audit:manage`; do not attempt to use a points-only token.
+- If lesson tools report a missing permission, ask TZH for a replacement token
+  with `lessons:manage`; audit-only and points-only tokens cannot authorize
+  lesson changes.
 - If an approved `commit_student_audit_case` call times out, report the timeout
   and retry only the exact same case ID and approved validation version. That
   retry is safe and does not repeat canonical records, invoices, or emails.

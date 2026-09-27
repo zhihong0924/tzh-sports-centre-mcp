@@ -27,6 +27,9 @@ MCP server. These rules apply to every task started from this folder.
 - For positive member point awards, use the `tzh-point-assignment` skill and
   follow its preview-before-confirmation workflow. Deductions and fee reminders
   are outside that skill.
+- For lesson duration or per-student price changes, use the
+  `tzh-lesson-management` skill and follow its stable-ID discovery,
+  full-batch preview, and explicit-confirmation workflow.
 - Never query PostgreSQL, Prisma, application source code, internal HTTP APIs,
   or repository scripts as an alternative way to access TZH data.
 - Never use shell commands as a fallback for private data. A failed local shell
@@ -80,6 +83,13 @@ MCP server. These rules apply to every task started from this folder.
   call `commit_points_assignment` only after explicit approval, using the exact
   opaque preview token. Never broaden an audit-only credential into point
   authority.
+- Lesson management is consequential and all-or-nothing. Discover concrete
+  lessons by stable ID, show every current/proposed duration, end time, RM
+  price, customization state, recurring-occurrence context, and downstream
+  effect in the signed preview, then commit only after literal approval of that
+  exact full batch. Rejected, stale, conflicting, or invalid batches make no
+  changes. Reuse an idempotency key only for an uncertain retry of unchanged
+  content.
 - Requests such as "continue", "finish", or "do the rest" are not approval to
   commit. If the reviewed version changes, review again and request approval
   again.
@@ -100,6 +110,9 @@ MCP server. These rules apply to every task started from this folder.
 - Report MCP and HTTP errors faithfully. After an uncertain commit result,
   retry only the exact same case ID and explicitly approved validation version;
   never substitute a newer version without a new review and approval.
+- For an uncertain lesson commit, retry only the exact preview token and the
+  same idempotency key. If the preview is stale or expired, preview the full
+  current batch again and request new approval.
 - For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout;
   an exact approved commit retry is safe and does not repeat canonical records,
   invoices, or emails.
