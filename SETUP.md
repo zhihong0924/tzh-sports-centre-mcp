@@ -131,6 +131,10 @@ anything.
 
 Lesson management uses `find_manageable_lessons`,
 `preview_lesson_management_batch`, and `commit_lesson_management_batch`.
+Discovery returns the active student count and minimal roster names with court,
+time, duration, and RM price so the intended occurrence can be identified; it
+does not expose contact, payment, or receipt details, and labels truncated
+rosters.
 Preview is read-only and must be shown in full. Commit requires literal
 approval of that exact preview, `confirm: true`, and a stable idempotency key.
 Any rejected batch changes no lessons.

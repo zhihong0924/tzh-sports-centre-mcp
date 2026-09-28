@@ -15,8 +15,12 @@ unchanged.
 1. Call `find_manageable_lessons` with a bounded date range and practical
    filters. Use only returned stable `lessonId` values. Names, chat claims, and
    list positions are never authoritative. If several lessons remain
-   plausible, show their date, time, court, lesson type, duration, and RM price
-   and ask the administrator to choose.
+   plausible, show their date, time, court, lesson type, duration, RM price,
+   active student count, and active student names, then ask the administrator
+   to choose. Return only the roster details needed for that choice; never add
+   contact, payment, or receipt information. If `rosterTruncated` is true, say
+   that only the first 100 active enrollments were returned and use the web
+   schedule when the complete roster is required.
 2. Build one full batch of distinct concrete lesson IDs. Each item must propose
    duration, per-student price, or both. Omitted fields preserve the current
    snapshot. Durations are positive 30-minute increments; prices are

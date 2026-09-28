@@ -84,8 +84,11 @@ MCP server. These rules apply to every task started from this folder.
   opaque preview token. Never broaden an audit-only credential into point
   authority.
 - Lesson management is consequential and all-or-nothing. Discover concrete
-  lessons by stable ID, show every current/proposed duration, end time, RM
-  price, customization state, recurring-occurrence context, and downstream
+  lessons by stable ID; use the returned active roster, court, time, duration,
+  and RM fee to identify the intended occurrence. Return only the names and
+  stable IDs needed for this choice, never contact or payment details. Show
+  every current/proposed duration, end time, RM price, customization state,
+  recurring-occurrence context, and downstream
   effect in the signed preview, then commit only after literal approval of that
   exact full batch. Rejected, stale, conflicting, or invalid batches make no
   changes. Reuse an idempotency key only for an uncertain retry of unchanged
