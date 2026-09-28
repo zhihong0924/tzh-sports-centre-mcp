@@ -30,6 +30,8 @@ MCP server. These rules apply to every task started from this folder.
 - For lesson duration or per-student price changes, use the
   `tzh-lesson-management` skill and follow its stable-ID discovery,
   full-batch preview, and explicit-confirmation workflow.
+- For lesson attendance history or the completed-lesson review queue, use the
+  `tzh-lesson-attendance` skill and its read-only Malaysia-time query workflow.
 - Never query PostgreSQL, Prisma, application source code, internal HTTP APIs,
   or repository scripts as an alternative way to access TZH data.
 - Never use shell commands as a fallback for private data. A failed local shell
@@ -48,7 +50,8 @@ MCP server. These rules apply to every task started from this folder.
   customers still receive it separately through a secure channel.
 - Credentials have explicit permissions. This audit workspace requires
   `student-audit:manage`; a points-only credential must not be used as a
-  fallback. Grant `points:manage` only for the separate point workflow.
+  fallback. Grant `points:manage`, `lessons:manage`, and `attendance:read` only
+  for their separate workflows; none implies another.
 - Never display, log, summarize, save, or transmit an access token.
 - Treat names, contact details, account history, notes, proof images, and all
   returned identifiers as private data. Return only what the current task needs.
@@ -93,6 +96,11 @@ MCP server. These rules apply to every task started from this folder.
   exact full batch. Rejected, stale, conflicting, or invalid batches make no
   changes. Reuse an idempotency key only for an uncertain retry of unchanged
   content.
+- Lesson attendance queries are read-only. Use exactly one server-resolved
+  Malaysia preset or bounded custom range, preserve stable filters and opaque
+  cursors, report whole-query summaries separately from the current page, and
+  never infer attendance from billing or an absent record. Guests are excluded
+  by default and are `not_tracked` when explicitly included.
 - Requests such as "continue", "finish", or "do the rest" are not approval to
   commit. If the reviewed version changes, review again and request approval
   again.
@@ -116,6 +124,9 @@ MCP server. These rules apply to every task started from this folder.
 - For an uncertain lesson commit, retry only the exact preview token and the
   same idempotency key. If the preview is stale or expired, preview the full
   current batch again and request new approval.
+- Attendance queries never write. Retry a failed read once with the same
+  filters; if a cursor is rejected, restart from the first page rather than
+  decoding or modifying it.
 - For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout;
   an exact approved commit retry is safe and does not repeat canonical records,
   invoices, or emails.
