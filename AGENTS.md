@@ -15,6 +15,13 @@ MCP server. These rules apply to every task started from this folder.
   copy its `.env`, or add credentials for branch development.
 - Commit application and MCP changes separately. Do not publish customer
   instructions for a tool contract that has not been integrated and deployed.
+- A scheduled run may integrate a completed direct prerequisite into both local
+  `main` branches and refresh the dependent task branches only through the
+  guarded prerequisite-recovery procedure in the application repository's
+  `docs/autonomous-development.md`. All affected repositories must pass its
+  clean-state, exact-branch, completion, and fast-forward/conflict preflight
+  checks before either repository changes. That exception does not authorize
+  pull, push, deploy, reset, rebase, unrelated merges, or branch cleanup.
 - Independent corrections that describe the currently deployed server may use
   the normal repository workflow; scheduled queue work must use its recorded
   branch and worktree.
