@@ -1,14 +1,15 @@
 ---
 name: tzh-lesson-attendance
-description: Use the tzh_sports_centre MCP tool to query registered-student lesson attendance, missing attendance, recorded outcomes, or due state over a Malaysia-time preset or bounded custom date range. Trigger for attendance review, completed lessons awaiting attendance, attendance history, or filtering attendance by lesson, court, lesson type, student, or stored status. This skill is read-only and never records or changes attendance.
+description: Use the tzh_sports_centre MCP tools to query lesson attendance and, only with explicit approval, preview and atomically record stable-ID attendance updates. Trigger for attendance review, missing or recorded outcomes, marking students present or absent, mark-all-present, or centre cancellation. Querying is read-only; recording follows a signed preview and confirmed commit workflow.
 ---
 
-# TZH Lesson Attendance Query
+# TZH Lesson Attendance
 
 Use only the `tzh_sports_centre` MCP connection. Do not fall back to shell,
-database, source-code, or direct HTTP access. This workflow is strictly
-read-only: it cannot record attendance, infer an outcome, send a reminder, or
-change a lesson, enrollment, replacement, fee, or notification.
+database, source-code, or direct HTTP access. The query workflow is strictly
+read-only. Recording uses separate `attendance:manage` authority and the staged
+preview/approval/commit workflow below. Never infer an outcome, send reminders,
+or bypass the tools.
 
 ## Query workflow
 
@@ -53,11 +54,49 @@ change a lesson, enrollment, replacement, fee, or notification.
   `returnedRowCount` describes the current page.
 - State which range and filters were queried and that no data changed.
 
+## Recording workflow
+
+1. Query first and identify every target by returned stable `lessonId` and
+   `enrollmentId`. Never target by name, email, list position, or chat claim.
+2. Build one bounded complete batch for the administrator's request:
+   - per student: `present`, `eligible_absence`, or
+     `absent_no_replacement`, with an optional reason;
+   - per lesson: `mark_all_present` or `centre_cancelled`.
+   Do not mix a lesson-wide action with per-student actions for that lesson.
+3. Call `preview_lesson_attendance_updates`. This writes nothing. Show every
+   target's current enrollment/attendance state, proposed stored outcome,
+   reason, affected enrollment IDs, replacement issuance/restoration, seat or
+   slot release, lesson cancellation, unchanged billing/invoice treatment,
+   idempotent no-op, and preview expiry.
+4. Ask separately whether the administrator approves that exact full preview.
+   “Continue”, “finish”, silence, or a generic next-step response is not
+   approval. Never decode, edit, or reconstruct the opaque preview token.
+5. Only after literal approval call `commit_lesson_attendance_updates` with the
+   exact token, `confirm: true`, and a stable idempotency key. Reuse that key
+   only for an uncertain retry of unchanged content.
+6. Report the durable operation ID, affected lesson/enrollment IDs,
+   action/outcome counts, replacements issued or restored, cancelled lessons,
+   and whether the result was replayed. Never add contact, payment, receipt, or
+   credential data.
+
+The server rejects guests, premature non-cancellation attendance, duplicate or
+ambiguous targets, replacement-funded eligible absences, stale/tampered/expired
+previews, and conflicting idempotency-key reuse. A rejected preview or commit
+changes nothing. `present` and absence outcomes preserve the existing charge;
+`centre_cancelled` preserves canonical billable treatment, releases slots, and
+issues or restores only the applicable replacement entitlement.
+
 ## Failures
 
 - If authentication lacks `attendance:read`, ask TZH for an
   attendance-read-enabled replacement token through a secure channel. Audit,
   points, and lesson-management permissions do not imply attendance access.
+- If preview or commit lacks `attendance:manage`, ask TZH for an independently
+  attendance-management-enabled token. Read authority does not imply write
+  authority, and write authority does not imply query access.
+- After an uncertain commit response, retry only the exact opaque preview token
+  and the same idempotency key. If the preview is stale or expired, preview the
+  full current batch again and obtain new explicit approval.
 - Report malformed, mixed, inverted, oversized, contradictory, or stale-cursor
   errors faithfully and correct the query rather than guessing results.
 - Never ask the user to paste a bearer token into chat.

@@ -32,8 +32,8 @@ normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
 The token must include the permissions needed by the intended workflow.
 **Manage Student Account Audits**, **Award member points**, **Manage lesson
-duration and price**, and **Read lesson attendance** are independent
-permissions; grant only those required.
+duration and price**, **Read lesson attendance**, and **Record lesson
+attendance** are independent permissions; grant only those required.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
 
@@ -157,6 +157,14 @@ default; when explicitly included they are `not_tracked`. A later lesson is
 `not_due`, and no billing or enrollment state is treated as proof of attendance.
 Use `nextCursor` unchanged with the same filters when `hasMore` is true.
 
+For an attendance-management token, first use the read tool to identify stable
+lesson/enrollment IDs, then call `preview_lesson_attendance_updates`. Show the
+complete preview and make no changes until the administrator literally approves
+that exact batch. Commit with `commit_lesson_attendance_updates`, the opaque
+preview token unchanged, `confirm: true`, and a stable idempotency key. Exact
+retries reuse the same token and key; stale or expired previews require a new
+preview and approval.
+
 The catalogue also includes `remove_student_audit_entry` for removing one entry
 from a draft and `delete_student_audit_case` for permanently deleting a draft
 or rejected case. Both require explicit confirmation and cannot reverse a
@@ -198,6 +206,9 @@ through the website's replacement-booking workflow.
 - If the attendance query reports a missing permission, ask TZH for a
   replacement token with `attendance:read`; audit, points, and lesson-management
   scopes do not authorize attendance data.
+- If attendance preview or commit reports a missing permission, ask TZH for a
+  replacement token with `attendance:manage`; `attendance:read` and every other
+  scope do not authorize attendance writes.
 - If an approved `commit_student_audit_case` call times out, report the timeout
   and retry only the exact same case ID and approved validation version. That
   retry is safe and does not repeat canonical records, invoices, or emails.

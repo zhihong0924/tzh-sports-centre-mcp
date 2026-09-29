@@ -57,8 +57,8 @@ MCP server. These rules apply to every task started from this folder.
   customers still receive it separately through a secure channel.
 - Credentials have explicit permissions. This audit workspace requires
   `student-audit:manage`; a points-only credential must not be used as a
-  fallback. Grant `points:manage`, `lessons:manage`, and `attendance:read` only
-  for their separate workflows; none implies another.
+  fallback. Grant `points:manage`, `lessons:manage`, `attendance:read`, and
+  `attendance:manage` only for their separate workflows; none implies another.
 - Never display, log, summarize, save, or transmit an access token.
 - Treat names, contact details, account history, notes, proof images, and all
   returned identifiers as private data. Return only what the current task needs.
@@ -108,6 +108,13 @@ MCP server. These rules apply to every task started from this folder.
   cursors, report whole-query summaries separately from the current page, and
   never infer attendance from billing or an absent record. Guests are excluded
   by default and are `not_tracked` when explicitly included.
+- Attendance recording is consequential and all-or-nothing. Use only stable
+  lesson/enrollment IDs returned by the attendance query. Preview the complete
+  batch and show every current state, proposed stored outcome, optional reason,
+  affected enrollment, replacement/cancellation/seat/slot effect, unchanged
+  billing treatment, no-op, and expiry. Commit only after literal approval of
+  that exact preview, using its opaque token unchanged and a stable idempotency
+  key. A stale or expired preview requires a new preview and approval.
 - Requests such as "continue", "finish", or "do the rest" are not approval to
   commit. If the reviewed version changes, review again and request approval
   again.
@@ -134,6 +141,9 @@ MCP server. These rules apply to every task started from this folder.
 - Attendance queries never write. Retry a failed read once with the same
   filters; if a cursor is rejected, restart from the first page rather than
   decoding or modifying it.
+- For an uncertain attendance commit, retry only the exact preview token and
+  same idempotency key. Never convert a timeout, “continue”, or generic approval
+  into authority for a different or newly generated batch.
 - For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout;
   an exact approved commit retry is safe and does not repeat canonical records,
   invoices, or emails.
