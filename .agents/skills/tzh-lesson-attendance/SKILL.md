@@ -7,9 +7,10 @@ description: Use the tzh_sports_centre MCP tools to query lesson attendance and,
 
 Use only the `tzh_sports_centre` MCP connection. Do not fall back to shell,
 database, source-code, or direct HTTP access. The query workflow is strictly
-read-only. Recording uses separate `attendance:manage` authority and the staged
-preview/approval/commit workflow below. Never infer an outcome, send reminders,
-or bypass the tools.
+read-only. Querying and recording require `lessons:manage`; recording also
+follows the staged preview/approval/commit workflow below. Existing tokens
+with `lessons:manage` can use these tools after server deployment. Never infer
+an outcome, send reminders, or bypass the tools.
 
 ## Query workflow
 
@@ -88,12 +89,10 @@ issues or restores only the applicable replacement entitlement.
 
 ## Failures
 
-- If authentication lacks `attendance:read`, ask TZH for an
-  attendance-read-enabled replacement token through a secure channel. Audit,
-  points, and lesson-management permissions do not imply attendance access.
-- If preview or commit lacks `attendance:manage`, ask TZH for an independently
-  attendance-management-enabled token. Read authority does not imply write
-  authority, and write authority does not imply query access.
+- If authentication lacks `lessons:manage`, ask TZH for a token with the
+  website's **Lesson management** control through a secure channel. The single
+  scope authorizes both attendance query and recording; each recording still
+  requires an exact preview and explicit approval.
 - After an uncertain commit response, retry only the exact opaque preview token
   and the same idempotency key. If the preview is stale or expired, preview the
   full current batch again and obtain new explicit approval.

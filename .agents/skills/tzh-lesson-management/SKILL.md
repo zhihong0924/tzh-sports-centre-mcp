@@ -57,8 +57,9 @@ unchanged.
   and no duplicate changes were made. Never reuse the key for changed content.
 - If a preview expires or becomes stale, preview the complete current batch
   again, show it in full, and request new approval.
-- If authentication lacks `lessons:manage`, ask TZH for a lesson-enabled
-  replacement token through a secure channel. Never ask the user to paste a
-  bearer token into chat.
+- If authentication lacks `lessons:manage`, ask TZH for a token with the
+  website's **Lesson management** control through a secure channel. That
+  same scope also authorizes attendance reading and recording. Never ask the
+  user to paste a bearer token into chat.
 - Never claim that a successful occurrence edit changed a recurring parent
   rule, sibling occurrence, existing invoice, enrollment, or payment.

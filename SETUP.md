@@ -30,10 +30,11 @@ named `skills.md` is not the Codex skill format.
 TZH supplies the token separately through a secure channel. A TZH administrator
 normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
-The token must include the permissions needed by the intended workflow.
-**Manage Student Account Audits**, **Award member points**, **Manage lesson
-duration and price**, **Read lesson attendance**, and **Record lesson
-attendance** are independent permissions; grant only those required.
+The token must include the permissions needed by the intended workflow. The
+website offers **Student account**, **Member points**, and **Lesson management**
+controls. Lesson management grants duration/price changes plus attendance
+reading and recording through the single `lessons:manage` permission. Existing
+tokens with that scope can use the attendance tools after server deployment.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
 
@@ -143,7 +144,8 @@ Preview is read-only and must be shown in full. Commit requires literal
 approval of that exact preview, `confirm: true`, and a stable idempotency key.
 Any rejected batch changes no lessons.
 
-For an attendance-read-enabled token, run this read-only smoke test:
+For a token with **Lesson management** access, run this read-only attendance
+smoke test:
 
 ```text
 Use $tzh-lesson-attendance and call query_lesson_attendance from
@@ -157,7 +159,7 @@ default; when explicitly included they are `not_tracked`. A later lesson is
 `not_due`, and no billing or enrollment state is treated as proof of attendance.
 Use `nextCursor` unchanged with the same filters when `hasMore` is true.
 
-For an attendance-management token, first use the read tool to identify stable
+For attendance recording, first use the read tool to identify stable
 lesson/enrollment IDs, then call `preview_lesson_attendance_updates`. Show the
 complete preview and make no changes until the administrator literally approves
 that exact batch. Commit with `commit_lesson_attendance_updates`, the opaque
@@ -200,15 +202,11 @@ through the website's replacement-booking workflow.
   replace any token that may have been exposed.
 - If audit tools report a missing permission, ask TZH for a replacement token
   with `student-audit:manage`; do not attempt to use a points-only token.
-- If lesson tools report a missing permission, ask TZH for a replacement token
-  with `lessons:manage`; audit-only and points-only tokens cannot authorize
-  lesson changes.
-- If the attendance query reports a missing permission, ask TZH for a
-  replacement token with `attendance:read`; audit, points, and lesson-management
-  scopes do not authorize attendance data.
-- If attendance preview or commit reports a missing permission, ask TZH for a
-  replacement token with `attendance:manage`; `attendance:read` and every other
-  scope do not authorize attendance writes.
+- If lesson or attendance tools report a missing permission, ask TZH for a
+  replacement token with the website's **Lesson management** control. It grants
+  `lessons:manage` for duration/price changes and attendance query/recording.
+  Audit-only and points-only tokens do not authorize lesson tools. Existing
+  `lessons:manage` tokens already have the needed scope after deployment.
 - If an approved `commit_student_audit_case` call times out, report the timeout
   and retry only the exact same case ID and approved validation version. That
   retry is safe and does not repeat canonical records, invoices, or emails.
