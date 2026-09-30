@@ -39,6 +39,8 @@ MCP server. These rules apply to every task started from this folder.
   full-batch preview, and explicit-confirmation workflow.
 - For lesson attendance history or the completed-lesson review queue, use the
   `tzh-lesson-attendance` skill and its read-only Malaysia-time query workflow.
+- For current administrator work due today, tomorrow, or this week, use the
+  `tzh-admin-attention` skill and its read-only query workflow.
 - Never query PostgreSQL, Prisma, application source code, internal HTTP APIs,
   or repository scripts as an alternative way to access TZH data.
 - Never use shell commands as a fallback for private data. A failed local shell
@@ -55,9 +57,10 @@ MCP server. These rules apply to every task started from this folder.
 - TZH administrators create independently revocable credentials from the
   website's **MCP Access Tokens** workspace. The plaintext is shown only once;
   customers still receive it separately through a secure channel.
-- The website offers three token controls: **Student account** grants
-  `student-audit:manage`, **Member points** grants `points:manage`, and
-  **Lesson management** grants `lessons:manage`. That one lesson scope
+- The website offers four token controls: **Student account** grants
+  `student-audit:manage`, **Member points** grants `points:manage`,
+  **Lesson management** grants `lessons:manage`, and **Read admin attention**
+  grants the independent `admin-attention:read` scope. That one lesson scope
   authorizes duration/price management and attendance query/recording. This
   audit workflow still requires `student-audit:manage`. Existing tokens with
   `lessons:manage` can use the attendance tools after server deployment.
@@ -105,6 +108,12 @@ MCP server. These rules apply to every task started from this folder.
   exact full batch. Rejected, stale, conflicting, or invalid batches make no
   changes. Reuse an idempotency key only for an uncertain retry of unchanged
   content.
+- Admin-attention queries are read-only. Map “tasks due today”, “tomorrow”,
+  and “this week” to the matching server preset; never ask a free-form tool
+  question. Present the resolved Malaysia range, as-of time, overdue work,
+  due-in-window work, undated backlog, queried providers, and exclusions.
+  An empty due section is not an all-clear. Keep stable IDs and opaque cursors
+  unchanged, and do not infer due dates from creation or preferred trial dates.
 - Lesson attendance queries are read-only. Use exactly one server-resolved
   Malaysia preset or bounded custom range, preserve stable filters and opaque
   cursors, report whole-query summaries separately from the current page, and
@@ -140,6 +149,9 @@ MCP server. These rules apply to every task started from this folder.
 - For an uncertain lesson commit, retry only the exact preview token and the
   same idempotency key. If the preview is stale or expired, preview the full
   current batch again and request new approval.
+- Admin-attention queries never write. Retry a failed read once with the same
+  range; after a stale cursor, restart at the first page. Report a provider
+  failure instead of claiming that no work exists.
 - Attendance queries never write. Retry a failed read once with the same
   filters; if a cursor is rejected, restart from the first page rather than
   decoding or modifying it.

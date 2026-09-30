@@ -14,7 +14,9 @@ tzh-sports-centre-mcp/
         │   └── SKILL.md
         ├── tzh-lesson-management/
         │   └── SKILL.md
-        └── tzh-lesson-attendance/
+        ├── tzh-lesson-attendance/
+        │   └── SKILL.md
+        └── tzh-admin-attention/
             └── SKILL.md
 ```
 
@@ -22,7 +24,8 @@ tzh-sports-centre-mcp/
 Codex discovers the skill from `.agents/skills`; it reads the full `SKILL.md`
 only when the request matches a skill or you invoke
 `$tzh-student-account-audit`, `$tzh-point-assignment`,
-`$tzh-lesson-management`, or `$tzh-lesson-attendance` explicitly. A loose file
+`$tzh-lesson-management`, `$tzh-lesson-attendance`, or
+`$tzh-admin-attention` explicitly. A loose file
 named `skills.md` is not the Codex skill format.
 
 ## 1. Store the bearer token on macOS
@@ -31,9 +34,11 @@ TZH supplies the token separately through a secure channel. A TZH administrator
 normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
 The token must include the permissions needed by the intended workflow. The
-website offers **Student account**, **Member points**, and **Lesson management**
-controls. Lesson management grants duration/price changes plus attendance
-reading and recording through the single `lessons:manage` permission. Existing
+website offers **Student account**, **Member points**, **Lesson management**,
+and **Read admin attention** controls. Read admin attention grants only the
+independent `admin-attention:read` permission. Lesson management grants
+duration/price changes plus attendance reading and recording through the
+single `lessons:manage` permission. Existing
 tokens with that scope can use the attendance tools after server deployment.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
@@ -159,6 +164,19 @@ default; when explicitly included they are `not_tracked`. A later lesson is
 `not_due`, and no billing or enrollment state is treated as proof of attendance.
 Use `nextCursor` unchanged with the same filters when `hasMore` is true.
 
+For a token with **Read admin attention** access, run this read-only smoke test:
+
+```text
+Use $tzh-admin-attention and call query_admin_attention from
+tzh_sports_centre with {"preset":"today"}. Report the resolved Malaysia range,
+overdue, due-in-window, and undated sections, plus queried providers and
+exclusions. Do not send messages or modify anything.
+```
+
+A customer's scheduled chat may call the same tool with `today`, `tomorrow`,
+or `this_week`. This setup does not create or configure that chat. An empty
+due-today section does not mean the overdue or undated backlog is empty.
+
 For attendance recording, first use the read tool to identify stable
 lesson/enrollment IDs, then call `preview_lesson_attendance_updates`. Show the
 complete preview and make no changes until the administrator literally approves
@@ -202,6 +220,9 @@ through the website's replacement-booking workflow.
   replace any token that may have been exposed.
 - If audit tools report a missing permission, ask TZH for a replacement token
   with `student-audit:manage`; do not attempt to use a points-only token.
+- If `query_admin_attention` reports a missing permission, ask TZH for a
+  separate token with **Read admin attention**. Audit, points, and lesson
+  permissions do not imply `admin-attention:read`.
 - If lesson or attendance tools report a missing permission, ask TZH for a
   replacement token with the website's **Lesson management** control. It grants
   `lessons:manage` for duration/price changes and attendance query/recording.
