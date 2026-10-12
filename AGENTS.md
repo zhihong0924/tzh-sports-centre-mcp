@@ -31,7 +31,7 @@ MCP server. These rules apply to every task started from this folder.
 - Use only tools from `tzh_sports_centre` to read or change private TZH data.
 - For student lookup or historical account reconciliation, use the
   `tzh-student-account-audit` skill and follow its staged workflow.
-- For already-paid non-member invoices, use the `tzh-non-member-invoice` skill only after its deployment prerequisite is satisfied. Preview the full invoice and obtain explicit approval before committing; do not attach member ownership by matching names.
+- For already-paid member or non-member invoices, use `tzh-manual-invoice` only after its deployment prerequisite is satisfied. Discover registered accounts with `search_invoice_members`, preserve the selected stable ID, preview all ownership/points/email effects, and obtain exact approval before commit. Manually entered non-member names never identify accounts. The old non-member skill/tools remain compatibility-only.
 - For positive member point awards, use the `tzh-point-assignment` skill and
   follow its preview-before-confirmation workflow. Deductions and fee reminders
   are outside that skill.
@@ -58,8 +58,8 @@ MCP server. These rules apply to every task started from this folder.
 - TZH administrators create independently revocable credentials from the
   website's **MCP Access Tokens** workspace. The plaintext is shown only once;
   customers still receive it separately through a secure channel.
-- This unpushed branch prepares non-member invoice instructions. Publish it only after the matching application code and invoice-idempotency migration are integrated and deployed, and connected-client checks pass.
-- After that rollout, **Non-member invoices** grants the independent `invoices:manage` scope; existing scopes gain no invoice authority.
+- Shared manual-invoice instructions are staged until the matching application enhancement is deployed and connected-client checks pass. The invoice-idempotency migration was applied to production on 2026-10-12; no new migration is needed.
+- After rollout, **Manual invoices** labels `invoices:manage` and authorizes both registered-user and non-member paid invoices. Existing invoice-enabled tokens gain the shared workflow; other scopes gain no invoice authority. Owners should review invoice token recipients before publishing this expanded capability.
 - The currently deployed website offers four token controls: **Student account** grants
   `student-audit:manage`, **Member points** grants `points:manage`,
   **Lesson management** grants `lessons:manage`, and **Read admin attention**
@@ -166,14 +166,25 @@ MCP server. These rules apply to every task started from this folder.
   invoices, or emails.
 
 
-## Prepared non-member invoice workflow
+## Prepared shared manual-invoice workflow
 
-The companion application branch adds `preview_non_member_invoice` (read-only)
-and `commit_non_member_invoice` (consequential). The new scope is
-`invoices:manage`; require a server-authenticated active administrator.
-Manually entered names do not identify member accounts. Only payment already
-received is supported. Display all returned names, date, multiline items, RM
-amounts, total, paid state, zero points, effects and expiry. Commit only with
-explicit approval of that exact signed token and literal confirmation. Exact
-retries preserve the token and key and return the existing invoice. Do not
-publish these prepared instructions before the rollout prerequisite above.
+`search_invoice_members` and `preview_manual_invoice` are read-only;
+`commit_manual_invoice` is consequential. All require a server-authenticated
+active administrator and `invoices:manage`. Use stable discovery IDs for members
+or explicitly enter a non-member name. Only already-received payment is supported.
+The primary name is first; additional names grant no ownership. Show every name,
+date, complete multiline item, formatted RM amount, total, paid state, selected
+member ownership, points, notification email, effects and expiry. Commit only
+after explicit approval of that exact full signed preview with literal confirmation.
+
+Member invoices and spend points are atomic; non-members have no account owner,
+points or email. Member email is fail-open after commit; report its returned
+status without claiming proven delivery. Exact retries preserve the approved
+token and never repeat invoice, points or email. Changed content, stale member
+identity/contact state or an expired uncommitted preview requires a new preview
+and approval. Deleted members cannot receive new invoices. A committed exact
+retry can replay after expiry. Never create a second invoice to resend an email.
+
+The old non-member tools remain compatible but cannot create member invoices.
+Do not publish these staged instructions until application rollout and connected
+verification are complete; never bypass the MCP boundary if tools are absent.

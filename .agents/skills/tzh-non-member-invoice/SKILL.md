@@ -5,7 +5,11 @@ description: Preview and, after exact approval, create already-paid manual invoi
 
 # Non-member paid invoices
 
-This branch is prepared for rollout. Do not publish/install this workflow until
+This compatibility workflow is prepared for rollout. After the shared invoice
+enhancement is deployed, prefer `tzh-manual-invoice` for new work. This skill
+continues to support only the legacy non-member tools.
+
+Do not publish/install this workflow until
 the application code and invoice-idempotency migration are integrated and
 deployed. If either required tool is absent, report the connection/deployment
 problem and stop; never substitute shell commands or internal HTTP endpoints.

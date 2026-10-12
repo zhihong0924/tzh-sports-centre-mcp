@@ -240,24 +240,53 @@ through the website's replacement-booking workflow.
   it discovers the updated `AGENTS.md` and skills.
 
 
-## Prepared enhancement — non-member paid invoices
+## Prepared enhancement — shared paid manual invoices
 
-This section and the `tzh-non-member-invoice` skill are staged in an unpushed
-branch. They are not instructions for the currently deployed server. The owner
-must first integrate and deploy the application enhancement and
-`20261012140000_non_member_invoice_idempotency` migration, then verify the
-connected preview/commit workflow before publishing this branch to customers.
+The `tzh-manual-invoice` skill and this section are staged until the matching
+application enhancement is deployed and connected-client checks pass. The
+invoice-idempotency migration was applied to production on 2026-10-12; this
+shared workflow needs no additional migration. Do not publish/install these
+instructions for an older deployed server.
 
-After that rollout, the website's **Non-member invoices** token control grants
-only `invoices:manage`. Create/reissue an independently revocable token through
-the website when this capability is needed; existing scopes do not gain it.
-Transmit plaintext only through the existing secure channel, never chat.
+After rollout, the website's **Manual invoices** token control grants
+`invoices:manage` for registered-user and non-member already-paid invoices.
+Existing invoice-enabled tokens cover both types; unrelated permissions do not
+imply invoice authority. Owners should review recipients and revoke/reissue any
+invoice token that should not gain member invoice access. Plaintext credentials
+are delivered through the secure channel, never chat.
 
-The skill uses `preview_non_member_invoice` to display a complete read-only
-proposal and `commit_non_member_invoice` only after approval of that exact
-signed preview. It supports manually named non-members and already-received
-payment, with no registered-user ownership, points, unpaid account charge or
-member email. The resulting PDF is available in the admin invoice workspace.
-Exact approved-token retries are safe; expired uncommitted previews require
-new preview and approval. If either tool is absent, stop and report that rollout
-or connection is incomplete; never bypass MCP to access private data.
+Verify discovery of `search_invoice_members`, `preview_manual_invoice` and
+`commit_manual_invoice`. For an invoice-enabled token, a read-only smoke test is:
+
+```text
+Use $tzh-manual-invoice and call search_invoice_members from tzh_sports_centre
+with a known test customer's name, email or phone fragment. Report the bounded
+matches. Do not preview or create an invoice.
+```
+
+Select a registered account by its stable discovery ID, or explicitly select a
+manually named non-member. The shared preview takes `customer` with
+`type: "member"` and `userId`, or `type: "non_member"` and `name`, plus
+Malaysia invoice date, positive RM line items, optional additional names,
+`paymentAlreadyReceived: true` and a stable idempotency key. It automatically
+places the primary customer name first and returns a complete read-only proposal.
+
+Show all names, items, amounts, total, paid state, member ownership, points,
+notification email, effects and expiry. Registered users earn RM1=1 point,
+rounded down, and receive an eligible invoice email; non-members receive no
+ownership, points or email. Additional names grant no account access. Commit
+only after explicit approval of the exact signed preview, using its unchanged
+token and `confirm: true`. Report invoice number, total RM, points and email
+status. Email failure does not undo the committed invoice or points; a replay
+never sends it again. The PDF is available in admin invoices and the registered
+owner's My Invoices.
+
+Exact approved-token retries are safe, including after expiry. Changed content,
+stale member name/email/phone or an expired uncommitted token requires a fresh
+preview and new approval. Never create another invoice to retry email or bypass
+an uncertain result. If a required tool is missing, report incomplete rollout
+or connection and stop; never use private data through SQL/shell/internal HTTP.
+
+The old non-member tool names and `tzh-non-member-invoice` skill remain for
+compatibility. They cannot select a registered member. Prefer the shared tools
+for new work after rollout.
