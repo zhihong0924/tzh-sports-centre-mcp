@@ -238,3 +238,26 @@ through the website's replacement-booking workflow.
   repository's root. Do not discard unexpected local changes; ask TZH for help
   instead. After a successful pull, fully restart Codex and start a new task so
   it discovers the updated `AGENTS.md` and skills.
+
+
+## Prepared enhancement — non-member paid invoices
+
+This section and the `tzh-non-member-invoice` skill are staged in an unpushed
+branch. They are not instructions for the currently deployed server. The owner
+must first integrate and deploy the application enhancement and
+`20261012140000_non_member_invoice_idempotency` migration, then verify the
+connected preview/commit workflow before publishing this branch to customers.
+
+After that rollout, the website's **Non-member invoices** token control grants
+only `invoices:manage`. Create/reissue an independently revocable token through
+the website when this capability is needed; existing scopes do not gain it.
+Transmit plaintext only through the existing secure channel, never chat.
+
+The skill uses `preview_non_member_invoice` to display a complete read-only
+proposal and `commit_non_member_invoice` only after approval of that exact
+signed preview. It supports manually named non-members and already-received
+payment, with no registered-user ownership, points, unpaid account charge or
+member email. The resulting PDF is available in the admin invoice workspace.
+Exact approved-token retries are safe; expired uncommitted previews require
+new preview and approval. If either tool is absent, stop and report that rollout
+or connection is incomplete; never bypass MCP to access private data.

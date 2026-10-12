@@ -31,6 +31,7 @@ MCP server. These rules apply to every task started from this folder.
 - Use only tools from `tzh_sports_centre` to read or change private TZH data.
 - For student lookup or historical account reconciliation, use the
   `tzh-student-account-audit` skill and follow its staged workflow.
+- For already-paid non-member invoices, use the `tzh-non-member-invoice` skill only after its deployment prerequisite is satisfied. Preview the full invoice and obtain explicit approval before committing; do not attach member ownership by matching names.
 - For positive member point awards, use the `tzh-point-assignment` skill and
   follow its preview-before-confirmation workflow. Deductions and fee reminders
   are outside that skill.
@@ -57,7 +58,9 @@ MCP server. These rules apply to every task started from this folder.
 - TZH administrators create independently revocable credentials from the
   website's **MCP Access Tokens** workspace. The plaintext is shown only once;
   customers still receive it separately through a secure channel.
-- The website offers four token controls: **Student account** grants
+- This unpushed branch prepares non-member invoice instructions. Publish it only after the matching application code and invoice-idempotency migration are integrated and deployed, and connected-client checks pass.
+- After that rollout, **Non-member invoices** grants the independent `invoices:manage` scope; existing scopes gain no invoice authority.
+- The currently deployed website offers four token controls: **Student account** grants
   `student-audit:manage`, **Member points** grants `points:manage`,
   **Lesson management** grants `lessons:manage`, and **Read admin attention**
   grants the independent `admin-attention:read` scope. That one lesson scope
@@ -161,3 +164,16 @@ MCP server. These rules apply to every task started from this folder.
 - For HTTP 413, request a smaller proof image. For HTTP 504, report the timeout;
   an exact approved commit retry is safe and does not repeat canonical records,
   invoices, or emails.
+
+
+## Prepared non-member invoice workflow
+
+The companion application branch adds `preview_non_member_invoice` (read-only)
+and `commit_non_member_invoice` (consequential). The new scope is
+`invoices:manage`; require a server-authenticated active administrator.
+Manually entered names do not identify member accounts. Only payment already
+received is supported. Display all returned names, date, multiline items, RM
+amounts, total, paid state, zero points, effects and expiry. Commit only with
+explicit approval of that exact signed token and literal confirmation. Exact
+retries preserve the token and key and return the existing invoice. Do not
+publish these prepared instructions before the rollout prerequisite above.
