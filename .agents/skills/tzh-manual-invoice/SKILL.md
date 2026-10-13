@@ -5,10 +5,8 @@ description: Preview and, after exact approval, create already-paid manual invoi
 
 # Paid manual invoices
 
-This enhancement is staged. Use it only after application deployment and
-connected-client verification. The existing invoice-idempotency migration is
-already applied; the shared member tools still require application rollout.
-If a required tool is missing, report the deployment/connection problem and stop.
+This workflow is deployed. If a required tool is missing, report the
+connection or permission problem and stop.
 Never substitute SQL, shell commands or internal HTTP endpoints.
 
 Use only `tzh_sports_centre` tools. Authority comes from a server-authenticated

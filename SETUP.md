@@ -16,7 +16,11 @@ tzh-sports-centre-mcp/
         │   └── SKILL.md
         ├── tzh-lesson-attendance/
         │   └── SKILL.md
-        └── tzh-admin-attention/
+        ├── tzh-admin-attention/
+        │   └── SKILL.md
+        ├── tzh-manual-invoice/
+        │   └── SKILL.md
+        └── tzh-non-member-invoice/
             └── SKILL.md
 ```
 
@@ -25,7 +29,7 @@ Codex discovers the skill from `.agents/skills`; it reads the full `SKILL.md`
 only when the request matches a skill or you invoke
 `$tzh-student-account-audit`, `$tzh-point-assignment`,
 `$tzh-lesson-management`, `$tzh-lesson-attendance`, or
-`$tzh-admin-attention` explicitly. A loose file
+`$tzh-admin-attention` or `$tzh-manual-invoice` explicitly. A loose file
 named `skills.md` is not the Codex skill format.
 
 ## 1. Store the bearer token on macOS
@@ -35,11 +39,11 @@ normally creates a separately named, independently revocable token from the
 website's **MCP Access Tokens** workspace; its plaintext is shown only once.
 The token must include the permissions needed by the intended workflow. The
 website offers **Student account**, **Member points**, **Lesson management**,
-and **Read admin attention** controls. Read admin attention grants only the
+**Read admin attention**, and **Manual invoices** controls. Read admin attention grants only the
 independent `admin-attention:read` permission. Lesson management grants
 duration/price changes plus attendance reading and recording through the
 single `lessons:manage` permission. Existing
-tokens with that scope can use the attendance tools after server deployment.
+tokens with that scope can use the deployed attendance tools.
 Never save it in this folder, `AGENTS.md`, `SKILL.md`, chat, screenshots, or
 source control.
 
@@ -106,7 +110,7 @@ project `AGENTS.md`, `.agents/skills`, and project configuration.
 1. Enter `/mcp` and confirm `tzh_sports_centre` is enabled and authenticated.
 2. Enter `/skills`, or type `$`, and confirm `tzh-student-account-audit`,
    `tzh-point-assignment`, `tzh-lesson-management`, and
-   `tzh-lesson-attendance` appear.
+   `tzh-lesson-attendance`, `tzh-admin-attention`, and `tzh-manual-invoice` appear.
 3. Run this read-only smoke test with a safe search value:
 
 ```text
@@ -227,7 +231,7 @@ through the website's replacement-booking workflow.
   replacement token with the website's **Lesson management** control. It grants
   `lessons:manage` for duration/price changes and attendance query/recording.
   Audit-only and points-only tokens do not authorize lesson tools. Existing
-  `lessons:manage` tokens already have the needed scope after deployment.
+  `lessons:manage` tokens already have the needed scope.
 - If an approved `commit_student_audit_case` call times out, report the timeout
   and retry only the exact same case ID and approved validation version. That
   retry is safe and does not repeat canonical records, invoices, or emails.
@@ -240,15 +244,13 @@ through the website's replacement-booking workflow.
   it discovers the updated `AGENTS.md` and skills.
 
 
-## Prepared enhancement — shared paid manual invoices
+## Shared paid manual invoices
 
-The `tzh-manual-invoice` skill and this section are staged until the matching
-application enhancement is deployed and connected-client checks pass. The
-invoice-idempotency migration was applied to production on 2026-10-12; this
-shared workflow needs no additional migration. Do not publish/install these
-instructions for an older deployed server.
+The shared manual-invoice workflow and all current MCP functions are deployed.
+Use the `tzh-manual-invoice` skill for the workflow below. The invoice-idempotency
+migration was applied to production on 2026-10-12; no additional migration is needed.
 
-After rollout, the website's **Manual invoices** token control grants
+The website's **Manual invoices** token control grants
 `invoices:manage` for registered-user and non-member already-paid invoices.
 Existing invoice-enabled tokens cover both types; unrelated permissions do not
 imply invoice authority. Owners should review recipients and revoke/reissue any
@@ -284,9 +286,8 @@ owner's My Invoices.
 Exact approved-token retries are safe, including after expiry. Changed content,
 stale member name/email/phone or an expired uncommitted token requires a fresh
 preview and new approval. Never create another invoice to retry email or bypass
-an uncertain result. If a required tool is missing, report incomplete rollout
-or connection and stop; never use private data through SQL/shell/internal HTTP.
+an uncertain result. If a required tool is missing, report a connection or permission problem and stop; never use private data through SQL/shell/internal HTTP.
 
 The old non-member tool names and `tzh-non-member-invoice` skill remain for
 compatibility. They cannot select a registered member. Prefer the shared tools
-for new work after rollout.
+for new work.
