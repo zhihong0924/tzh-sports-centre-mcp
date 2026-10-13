@@ -189,3 +189,13 @@ retry can replay after expiry. Never create a second invoice to resend an email.
 The old non-member tools remain compatible but cannot create member invoices.
 Never bypass the MCP boundary if tools are absent; check the connection and
 permissions instead.
+
+## Pending off-site lesson rollout
+
+Awaiting the off-site migration and server release: lesson discovery and
+attendance may return `court.id = null` and an `Off-site: …` venue name. Treat
+this as an external location with no centre court; never invent a court ID.
+Numeric court filters exclude these lessons. Existing `lessons:manage` scopes
+and exact preview/commit approval still apply. Off-site duration/price changes
+reserve no centre slots and may fall outside centre operating hours. Lesson
+creation remains on the website. Apply these semantics only after deployment.
