@@ -292,12 +292,12 @@ The old non-member tool names and `tzh-non-member-invoice` skill remain for
 compatibility. They cannot select a registered member. Prefer the shared tools
 for new work.
 
-## Pending off-site lesson rollout
+## Off-site lessons — deployed 16 October 2026
 
-Awaiting the off-site migration and server release: lesson discovery and
+The off-site migration and server release are deployed. Lesson discovery and
 attendance may return `court.id = null` and an `Off-site: …` venue name. Treat
 this as an external location with no centre court; never invent a court ID.
 Numeric court filters exclude these lessons. Existing `lessons:manage` scopes
 and exact preview/commit approval still apply. Off-site duration/price changes
 reserve no centre slots and may fall outside centre operating hours. Lesson
-creation remains on the website. Apply these semantics only after deployment.
+creation remains on the website.
