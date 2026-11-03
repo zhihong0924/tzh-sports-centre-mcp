@@ -58,7 +58,7 @@ MCP server. These rules apply to every task started from this folder.
 - TZH administrators create independently revocable credentials from the
   website's **MCP Access Tokens** workspace. The plaintext is shown only once;
   customers still receive it separately through a secure channel.
-- All current MCP functions are deployed, as confirmed by the owner on 2026-10-13. The invoice-idempotency migration was applied to production on 2026-10-12; no new migration is needed.
+- The owner confirmed the then-existing MCP functions on 2026-10-13. That dated confirmation does not establish availability of later tools. Verify required tool discovery on the configured connection; migration readiness for later releases requires its own check.
 - **Manual invoices** labels `invoices:manage` and authorizes both registered-user and non-member paid invoices. Existing invoice-enabled tokens gain the shared workflow; other scopes gain no invoice authority. Owners should review invoice token recipients for this expanded capability.
 - The currently deployed website offers these token controls: **Student account** grants
   `student-audit:manage`, **Member points** grants `points:manage`,
