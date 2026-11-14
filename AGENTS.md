@@ -201,34 +201,35 @@ reserve no centre slots and may fall outside centre operating hours. Lesson
 creation remains on the website.
 
 
-## Stringing outreach — awaiting deployment and supervised activation
+## Stringing reminders — awaiting deployment and supervised activation
 
 Use `tzh-stringing-outreach` for payment/pickup reminders, post-collection feedback
-and due restring messages. Its eight tools require `stringing-outreach:manage`
-and a live active administrator. The owner-approved forward migration grants this
-scope to all existing tokens without replacing secrets or changing expiry,
-revocation or other permissions. New tokens explicitly select Stringing outreach.
-Until supporting tools and migration deploy, report them unavailable.
+and due restring messages. Its six tools require `stringing-outreach:manage` and
+a live active administrator. Existing tokens inherit the scope after the existing
+owner-approved migration; secrets, expiry/revocation and other scopes are retained.
+New tokens select **Stringing reminders**. Refresh discovery after updating.
 
-Payment timing is one centre policy managed through MCP: first delay from received
-date, second delay from first recorded successful send, in Malaysia calendar days.
-Null disables a stage; defaults are disabled. Change settings only when the admin
-requests it, using the current version and literal confirmation. A scheduled send
-run reads the policy and never changes it. Feedback is once, three days after
-collection, and pickup requires Ready. A missing due feedback request can be
-created explicitly; never replace a revoked link or submit feedback.
+Payment timing is one versioned centre policy: first delay from received date,
+second from first recorded successful send, in Malaysia calendar days. Null disables
+a stage. Change only when requested, using current version and literal confirmation.
+Scheduled runs read settings. Feedback is once, three days after collection; pickup
+requires Ready. Create a missing due feedback request explicitly; never replace a
+revoked link or submit feedback.
 
-Sending uses the approved connected browser for WhatsApp Web or computer access
-for the installed application. Verify recipient and exact prepared message,
-claim/recover, send once and observe its new outgoing message before finishing.
-Owner-approved scheduled scope may authorize matching recurring sends; a token
-alone does not authorize them. Stop for changed/out-of-scope recipients/content,
-login failures and uncertainty. Never infer Sent from navigation/copy/typing or
-clicking Send alone. Expired claims remain uncertain; use the original attempt.
-Human recovery requires checking the chat and stopping the original runner.
+Use list → prepare → approved WhatsApp UI send → finish. Preparation returns the
+exact website-template message/link and checks enabled/contact hours. Verify the
+recipient/text and observe the new outgoing message before calling
+`finish_stringing_outreach({ jobId, stage, confirm: true })`. This updates the same
+sent status as website Mark as sent. Discovery skips that existing flag. No claim,
+recovery tool, attempt ID or separate panel is used. If no observed send, leave the
+status unchanged; a later run may retry. The owner accepts duplicate risk after a
+send/recording disconnect. Run one sender at a time; do not claim exactly-once sends.
 
-Respect customer pauses, contact hours, one recipient per run/day and the run cap.
-Report counts/minimal job references and partial discovery coverage, never phones,
-message bodies or private links. Use job/stage/customer IDs; each visit is independent.
-Do not use runtime SQL/source/internal HTTP/shell, edit fees/progress/payments,
-submit feedback, change templates/language or activate another automation.
+Respect customer pause, approved hours, at most 20 sends and one job per customer
+per run. Those run limits are client guidance, not server reservations. Standing
+owner approval covers matching scheduled scope; token access alone does not.
+Stop for mismatched recipients/content, login/permission failures or unsupported UI.
+Report counts/minimal job references and partial coverage, never private messages,
+phones or feedback links. Do not use runtime SQL/source/internal HTTP/shell, edit
+fees/progress/payments, submit feedback, change templates/language or activate an
+unrequested schedule. Production deployment and schedule activation remain separate.
