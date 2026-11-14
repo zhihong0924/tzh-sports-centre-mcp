@@ -246,9 +246,11 @@ through the website's replacement-booking workflow.
 
 ## Shared paid manual invoices
 
-The shared manual-invoice workflow and all current MCP functions are deployed.
-Use the `tzh-manual-invoice` skill for the workflow below. The invoice-idempotency
-migration was applied to production on 2026-10-12; no additional migration is needed.
+Use the `tzh-manual-invoice` skill for the shared manual-invoice workflow below.
+The owner confirmed the then-existing functions on 2026-10-13 and the
+invoice-idempotency migration on 2026-10-12. These dated checks do not establish
+availability or migration readiness of later releases. Verify required tools
+on the configured connection.
 
 The website's **Manual invoices** token control grants
 `invoices:manage` for registered-user and non-member already-paid invoices.
