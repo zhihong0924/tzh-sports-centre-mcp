@@ -204,7 +204,7 @@ creation remains on the website.
 ## Stringing reminders — awaiting deployment and supervised activation
 
 Use `tzh-stringing-reminders` and the four list/prepare/finish/create-feedback-request
-tools. Require `stringing-outreach:manage` and a live active administrator. The
+tools. Require `stringing-reminders:manage` and a live active administrator. The
 existing owner-approved migration grants scope to existing tokens while retaining
 secrets, expiry/revocation and other permissions. New tokens select **Stringing
 reminders**. Refresh discovery and report unavailable tools.

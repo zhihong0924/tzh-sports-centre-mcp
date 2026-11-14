@@ -308,14 +308,18 @@ creation remains on the website.
 ## Stringing reminders setup — awaiting deployment and supervised activation
 
 Deploy the matching application, forward migrations and customer workspace before
-using this in production. Existing tokens inherit `stringing-outreach:manage` from
+using this in production. Existing tokens inherit `stringing-reminders:manage` from
 the existing owner-approved migration; secrets, other scopes and expiry/revocation
 remain unchanged. New tokens select **Stringing reminders**. Require a live active
 administrator. Keep the stable signing secret and trusted HTTPS feedback origin.
 
-Discover four tools: `list_stringing_outreach`, `prepare_stringing_outreach`,
-`finish_stringing_outreach`, `create_stringing_outreach_feedback_request`.
-Refresh cached tool discovery. There are no policy, claim or recovery tools.
+Discover four tools: `list_stringing_reminders`, `prepare_stringing_reminder`,
+`mark_stringing_reminder_sent`, `create_stringing_feedback_request`.
+Refresh cached tool discovery after updating: the retired tool names are no longer
+registered. Existing bearer secrets remain valid; the server recognizes the retired
+permission internally and the data-only permission migration normalizes stored
+scopes. Token expiry, revocation and other permissions are unchanged.
+There are no policy, claim or recovery tools.
 There is no customer pause checkbox or stored reminder policy.
 
 The admin puts payment waiting periods in the scheduler prompt, for example:
@@ -334,14 +338,14 @@ WhatsApp app and at most 20 messages/one job per customer per run. Run one sende
 at a time; limits are client instructions, not server reservations. Sign in to the
 approved WhatsApp desktop or Web session and enable connected computer/browser
 access. Token access alone does not authorize sending. Enable the existing
-`STRINGING_OUTREACH_ENABLED` setting and configure approved integer start/end
+`STRINGING_REMINDERS_ENABLED` setting and configure approved integer start/end
 hours only for a sending session; preparation checks this gate. Ordinary dry runs
 only list candidates and never open WhatsApp or record sent status.
 
 For a supervised test, use an owner-controlled recipient and eligible fictional
 job. Prepare fresh, privately verify destination and exact generated message, send
 through the approved WhatsApp UI, observe the corresponding new outgoing message,
-then call `finish_stringing_outreach({ jobId, stage, confirm:true })`. Verify the
+then call `mark_stringing_reminder_sent({ jobId, stage, confirm:true })`. Verify the
 existing website sent status and, for restring, completed reminder. Do not expose
 phones/messages/feedback links in logs, screenshots or summaries. No real customer
 sends as development tests. Schedule activation remains a separate owner action.
