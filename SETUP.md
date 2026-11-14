@@ -307,79 +307,68 @@ creation remains on the website.
 
 ## Stringing reminders setup — awaiting deployment and supervised activation
 
-Deploy the matching application/tools and the existing access migration before
-using these instructions in production. Existing tokens inherit
-`stringing-outreach:manage` without replacing their secrets or changing other
-scopes/expiry/revocation. New tokens select **Stringing reminders**. The owner
-installation and endpoint remain unchanged; require a live active administrator.
-Keep a stable signing secret and trusted HTTPS website origin for feedback links.
+Deploy the matching application, forward migrations and customer workspace before
+using this in production. Existing tokens inherit `stringing-outreach:manage` from
+the existing owner-approved migration; secrets, other scopes and expiry/revocation
+remain unchanged. New tokens select **Stringing reminders**. Require a live active
+administrator. Keep the stable signing secret and trusted HTTPS feedback origin.
 
-Agree on recipients, stages (payment_first/payment_second/ready/feedback/restring),
-saved EN/ZH/MS templates, Malaysia contact hours, WhatsApp application and a limit
-of at most 20 messages per run. Use one sender; do not overlap runs. Sign in to the
-approved WhatsApp desktop app or Web session and allow connected computer/browser
-access. Tokens alone never authorize sends. Enable `STRINGING_OUTREACH_ENABLED`
-and configure integer `STRINGING_OUTREACH_START_HOUR` / `STRINGING_OUTREACH_END_HOUR`
-(start inclusive, end exclusive) for approved hours. Preparation checks this gate.
-Keep it disabled for ordinary dry runs. Schedule activation remains a separate
-owner action after a supervised test.
+Discover four tools: `list_stringing_outreach`, `prepare_stringing_outreach`,
+`finish_stringing_outreach`, `create_stringing_outreach_feedback_request`.
+Refresh cached tool discovery. There are no policy, claim or recovery tools.
+There is no customer pause checkbox or stored reminder policy.
 
-Payment timing is saved through MCP: whole Malaysia calendar days 0–3650 or null
-(disabled). First delay starts on received date; second starts on the first recorded
-successful send. Read current policy/version, review the requested settings, then
-save with literal confirmation. Never change policy during a scheduled run unless
-asked. Feedback is once, three days after collection. Pickup requires Ready.
-Restring follows the job's pending reminder. Revoked feedback links are never
+The admin puts payment waiting periods in the scheduler prompt, for example:
+“First payment reminder two days after receipt; second reminder four days after
+the first recorded send.” Pass `waitingDays:2` for payment_first and `waitingDays:4`
+for payment_second in every list/prepare call. Both accept 0–3650 whole Malaysia
+calendar days. Missing values are rejected; never guess a default or save settings.
+For ready/feedback/restring omit waitingDays. Disable a stage by excluding it from
+the approved schedule. If timing changes, restart pagination with no cursor.
+Feedback remains once, three days after collection; pickup requires Ready and
+restring follows the job's pending due date. A revoked feedback link is never
 replaced automatically; create a missing due request only when explicitly needed.
 
-Discover these six tools: `get_stringing_outreach_policy`,
-`update_stringing_outreach_policy`, `create_stringing_outreach_feedback_request`,
-`list_stringing_outreach`, `prepare_stringing_outreach`, `finish_stringing_outreach`.
-Refresh tool discovery after updating. Claim/recovery tools and attempt payloads
-are retired. Use the updated customer skill.
+Agree on recipients, stages, saved EN/ZH/MS templates, Malaysia contact hours,
+WhatsApp app and at most 20 messages/one job per customer per run. Run one sender
+at a time; limits are client instructions, not server reservations. Sign in to the
+approved WhatsApp desktop or Web session and enable connected computer/browser
+access. Token access alone does not authorize sending. Enable the existing
+`STRINGING_OUTREACH_ENABLED` setting and configure approved integer start/end
+hours only for a sending session; preparation checks this gate. Ordinary dry runs
+only list candidates and never open WhatsApp or record sent status.
 
-Read-only dry run:
+For a supervised test, use an owner-controlled recipient and eligible fictional
+job. Prepare fresh, privately verify destination and exact generated message, send
+through the approved WhatsApp UI, observe the corresponding new outgoing message,
+then call `finish_stringing_outreach({ jobId, stage, confirm:true })`. Verify the
+existing website sent status and, for restring, completed reminder. Do not expose
+phones/messages/feedback links in logs, screenshots or summaries. No real customer
+sends as development tests. Schedule activation remains a separate owner action.
 
-```text
-Use $tzh-stringing-outreach to read payment timing and list approved stages through
-tzh_sports_centre. Scan at most 250 candidates per stage (five pages of 50).
-Report counts, skip reasons and partial coverage. Do not open WhatsApp, send or
-record contact.
-```
+If not sent or not observed, leave the sent flag unchanged. A later run can retry
+eligible unsent work; the owner accepts duplicate risk after a send/recording
+disconnect or overlapping runs. Check the chat when unsure; never invent Sent.
+Stop on login, permission, recipient or configuration failures. MCP uses the same
+website template formatter and Mark as sent writer. It does not change payment,
+progress, fees, points, invoices or feedback responses.
 
-For a supervised test, use an owner-controlled recipient tied to an eligible
-fictional job. Prepare immediately before sending; privately verify destination
-and exact generated text. Send through the approved WhatsApp UI, observe the new
-outgoing message in the verified chat, then call `finish_stringing_outreach` with
-`{ jobId, stage, confirm: true }`. Verify the existing dashboard sent status and,
-for restring, completed reminder. Do not expose messages, phones or private feedback
-links in logs, screenshots or summaries. No real customer sends as development tests.
-
-If not sent, leave the existing status unchanged. There is no recovery panel,
-reservation or uncertain state. The next run can retry any eligible stage still
-not marked sent. The owner accepts duplicate risk if WhatsApp sent but Codex lost
-the acknowledgement, or two runs overlap. Check the chat when an outcome is unclear;
-never mark sent without observing it. Sent recording is the same idempotent writer
-as the website Mark as sent button. The customer pause checkbox remains in Message.
-The unused attempt table is removed by the forward cleanup migration. Limit extra jobs for
-the same customer within each run; this guidance is enforced by the client, not a
-server reservation. Stop on login, permission, recipient or configuration failures.
-
-Reviewed schedule prompt template (fill approved values before activation):
+Example scheduler prompt (fill and approve before activation):
 
 ```text
-Use $tzh-stringing-outreach through tzh_sports_centre for OWNER_APPROVED recipients,
-saved templates and stages, within APPROVED_MALAYSIA_HOURS using APPROVED_WHATSAPP_APP.
-Use one sender, at most APPROVED_LIMIT (maximum 20) messages and one job per customer
-per run. Read payment timing without changing it. Scan at most 250 candidates per
-stage; report partial coverage. Respect existing sent flags, customer pauses and
-all returned skip reasons. Create a missing due feedback request once if authorized.
-Prepare fresh immediately before sending. Use the exact returned message/link,
-verify its recipient, send once and observe the new outgoing message. Mark sent
-with finish_stringing_outreach({ jobId, stage, confirm: true }); never mark unsent
-or unobserved messages. If sending fails, leave the sent flag unchanged. The owner
-accepts that a lost acknowledgement can result in a duplicate on a later run.
-Report sent/skipped/failed counts and minimal job references, never private content.
-Do not activate another schedule or edit fees, progress, payments, feedback,
-templates or language.
+Use $tzh-stringing-reminders through tzh_sports_centre for OWNER_APPROVED recipients
+and saved templates within APPROVED_MALAYSIA_HOURS using APPROVED_WHATSAPP_APP.
+For payment_first use waitingDays 2, measured from receipt; for payment_second use
+waitingDays 4, measured from first recorded send. These are this schedule's admin
+settings, not website settings. Skip any stage not approved here. Use the same
+waitingDays for each stage's list and prepare calls. Omit it for ready, feedback
+and restring. Run one sender, at most APPROVED_LIMIT (maximum 20) messages and one
+job per customer per run. Scan up to five pages of 50 per stage; report partial
+coverage. Respect existing sent flags and all returned skip reasons. Create a
+missing due feedback request once if authorized. Prepare immediately before sending;
+use the exact returned message/link and verify the recipient. Send once, observe
+the new outgoing message, then mark that job/stage sent. Leave status unchanged if
+not sent or not observed. The owner accepts possible duplicates after a lost
+acknowledgement. Report counts/minimal job references, never private content.
+Do not change business data, templates, language or schedules outside this request.
 ```

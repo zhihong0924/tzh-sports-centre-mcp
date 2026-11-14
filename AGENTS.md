@@ -203,33 +203,32 @@ creation remains on the website.
 
 ## Stringing reminders — awaiting deployment and supervised activation
 
-Use `tzh-stringing-outreach` for payment/pickup reminders, post-collection feedback
-and due restring messages. Its six tools require `stringing-outreach:manage` and
-a live active administrator. Existing tokens inherit the scope after the existing
-owner-approved migration; secrets, expiry/revocation and other scopes are retained.
-New tokens select **Stringing reminders**. Refresh discovery after updating.
+Use `tzh-stringing-reminders` and the four list/prepare/finish/create-feedback-request
+tools. Require `stringing-outreach:manage` and a live active administrator. The
+existing owner-approved migration grants scope to existing tokens while retaining
+secrets, expiry/revocation and other permissions. New tokens select **Stringing
+reminders**. Refresh discovery and report unavailable tools.
 
-Payment timing is one versioned centre policy: first delay from received date,
-second from first recorded successful send, in Malaysia calendar days. Null disables
-a stage. Change only when requested, using current version and literal confirmation.
-Scheduled runs read settings. Feedback is once, three days after collection; pickup
-requires Ready. Create a missing due feedback request explicitly; never replace a
-revoked link or submit feedback.
+Payment waiting periods come only from the admin's scheduler prompt. Supply
+`waitingDays` (0–3650 whole Malaysia calendar days) in every payment list/prepare
+call: first from received date, second from first recorded send. Match the prompt's
+value for each stage; if missing, ask before processing that payment stage. Omit
+the argument for other stages, and omit unapproved stages from the run. Do not
+create saved policies or change schedules. No customer pause setting exists.
 
-Use list → prepare → approved WhatsApp UI send → finish. Preparation returns the
-exact website-template message/link and checks enabled/contact hours. Verify the
-recipient/text and observe the new outgoing message before calling
-`finish_stringing_outreach({ jobId, stage, confirm: true })`. This updates the same
-sent status as website Mark as sent. Discovery skips that existing flag. No claim,
-recovery tool, attempt ID or separate panel is used. If no observed send, leave the
-status unchanged; a later run may retry. The owner accepts duplicate risk after a
-send/recording disconnect. Run one sender at a time; do not claim exactly-once sends.
+Use list → fresh preparation → approved WhatsApp UI send → finish with
+`{ jobId, stage, confirm:true }` after observing the new outgoing message in the
+verified chat. Use the exact website-template text/link. Existing sent flags are
+the only completion truth; retries preserve the first sent timestamp. Feedback is
+once, three days after collection, pickup requires Ready and restring uses its saved
+due date. Create a missing due feedback request explicitly; never replace a revoked
+link or submit feedback. No claim/recovery tool or attempt ledger remains.
 
-Respect customer pause, approved hours, at most 20 sends and one job per customer
-per run. Those run limits are client guidance, not server reservations. Standing
-owner approval covers matching scheduled scope; token access alone does not.
-Stop for mismatched recipients/content, login/permission failures or unsupported UI.
-Report counts/minimal job references and partial coverage, never private messages,
-phones or feedback links. Do not use runtime SQL/source/internal HTTP/shell, edit
-fees/progress/payments, submit feedback, change templates/language or activate an
-unrequested schedule. Production deployment and schedule activation remain separate.
+Run one sender, at most 20 messages and one job per customer per run within approved
+Malaysia contact hours. Client limits are not server reservations. A lost send
+acknowledgement can cause a later duplicate, as accepted by the owner. Leave sent
+status unchanged without an observed send and stop on login/permission/mismatch/UI
+failures. Standing approval covers matching scheduled scope; token access alone
+never authorizes sending. Report counts/minimal IDs and partial coverage, not private
+content. No SQL/source/internal HTTP/shell fallback, financial/progress edits,
+feedback submission, template/language changes or unrequested schedule activation.
