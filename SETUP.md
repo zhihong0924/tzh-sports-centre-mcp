@@ -391,3 +391,11 @@ not sent or not observed. The owner accepts possible duplicates after a lost
 acknowledgement. Report counts/minimal job references, never private content.
 Do not change business data, templates, language or schedules outside this request.
 ```
+
+
+The release permission migration grants all six current MCP permissions to existing
+active, unexpired tokens under explicit owner approval, including Stringing
+reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
+scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
+pause or timing-policy tables are deployed. New tokens keep explicit permission
+selection; server-side active administrator checks still apply.

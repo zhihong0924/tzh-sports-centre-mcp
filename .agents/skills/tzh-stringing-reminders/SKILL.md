@@ -86,3 +86,11 @@ new scan with no cursor. There are no policy tools or customer pause settings.
 8. Report sent/skipped/failed counts, minimal job references and incomplete scans,
    never private phones, messages or feedback links. Do not change settings,
    business data or schedules outside the request.
+
+
+The release permission migration grants all six current MCP permissions to existing
+active, unexpired tokens under explicit owner approval, including Stringing
+reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
+scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
+pause or timing-policy tables are deployed. New tokens keep explicit permission
+selection; server-side active administrator checks still apply.

@@ -245,3 +245,11 @@ failures. Standing approval covers matching scheduled scope; token access alone
 never authorizes sending. Report counts/minimal IDs and partial coverage, not private
 content. No SQL/source/internal HTTP/shell fallback, financial/progress edits,
 feedback submission, template/language changes or unrequested schedule activation.
+
+
+The release permission migration grants all six current MCP permissions to existing
+active, unexpired tokens under explicit owner approval, including Stringing
+reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
+scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
+pause or timing-policy tables are deployed. New tokens keep explicit permission
+selection; server-side active administrator checks still apply.
