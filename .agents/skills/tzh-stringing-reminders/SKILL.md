@@ -87,4 +87,3 @@ new scan with no cursor. There are no policy tools or customer pause settings.
 8. Report sent/skipped/failed counts, minimal job references and incomplete scans,
    never private phones, messages or feedback links. Do not change settings,
    business data or schedules outside the request.
-
