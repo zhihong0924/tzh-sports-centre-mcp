@@ -308,9 +308,10 @@ creation remains on the website.
 ## Stringing reminders setup — scheduler setup required
 
 Deploy the matching application, forward migrations and customer workspace before
-using this in production. Existing tokens inherit `stringing-reminders:manage` from
-the existing owner-approved migration; secrets, other scopes and expiry/revocation
-remain unchanged. New tokens select **Stringing reminders**. Require a live active
+using this in production. Existing active, unexpired tokens receive all six current permissions through
+the owner-approved data-only release migration; secrets, owners, unrelated scopes
+and expiry/revocation stay unchanged. Expired/revoked tokens are unchanged and
+remain invalid. New tokens select **Stringing reminders**. Require a live active
 administrator. Keep the stable signing secret and trusted HTTPS feedback origin.
 
 Discover four tools: `list_stringing_reminders`, `prepare_stringing_reminder`,
@@ -392,10 +393,3 @@ acknowledgement. Report counts/minimal job references, never private content.
 Do not change business data, templates, language or schedules outside this request.
 ```
 
-
-The release permission migration grants all six current MCP permissions to existing
-active, unexpired tokens under explicit owner approval, including Stringing
-reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
-scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
-pause or timing-policy tables are deployed. New tokens keep explicit permission
-selection; server-side active administrator checks still apply.

@@ -6,8 +6,9 @@ description: Find due stringing payment/pickup/feedback/restring messages using 
 # Stringing reminders
 
 Requires the matching deployed four-tool `tzh_sports_centre` contract,
-`stringing-reminders:manage` and a live active administrator. Existing tokens inherit
-scope after the existing owner-approved migration. Refresh cached discovery after
+`stringing-reminders:manage` and a live active administrator. Existing active, unexpired tokens received all six current permissions through
+the owner-approved data-only release migration. Secrets, owners and validity
+stay unchanged; expired/revoked tokens are unchanged and remain invalid. Refresh cached discovery after
 updating. Missing tools are a connection/version problem: never fall back to SQL,
 source, internal HTTP or shell. Token access alone does not authorize sending.
 Production schedule activation follows deployment and supervised setup.
@@ -87,10 +88,3 @@ new scan with no cursor. There are no policy tools or customer pause settings.
    never private phones, messages or feedback links. Do not change settings,
    business data or schedules outside the request.
 
-
-The release permission migration grants all six current MCP permissions to existing
-active, unexpired tokens under explicit owner approval, including Stringing
-reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
-scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
-pause or timing-policy tables are deployed. New tokens keep explicit permission
-selection; server-side active administrator checks still apply.

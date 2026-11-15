@@ -205,8 +205,9 @@ creation remains on the website.
 
 Use `tzh-stringing-reminders` and the four list/prepare/finish/create-feedback-request
 tools. Require `stringing-reminders:manage` and a live active administrator. The
-existing owner-approved migration grants scope to existing tokens while retaining
-secrets, expiry/revocation and other permissions. New tokens select **Stringing
+owner-approved data-only migration grants all six current permissions to existing
+active, unexpired tokens while retaining secrets, owners, expiry/revocation and
+unrelated scopes. Expired/revoked tokens are unchanged and remain invalid. New tokens select **Stringing
 reminders**. Refresh discovery and report unavailable tools.
 
 Payment waiting periods come only from the admin's scheduler prompt. Supply
@@ -246,10 +247,3 @@ never authorizes sending. Report counts/minimal IDs and partial coverage, not pr
 content. No SQL/source/internal HTTP/shell fallback, financial/progress edits,
 feedback submission, template/language changes or unrequested schedule activation.
 
-
-The release permission migration grants all six current MCP permissions to existing
-active, unexpired tokens under explicit owner approval, including Stringing
-reminders. It preserves bearer secrets, owners, expiry/revocation and unrelated
-scopes. Expired or revoked tokens are unchanged and remain invalid. No tracking,
-pause or timing-policy tables are deployed. New tokens keep explicit permission
-selection; server-side active administrator checks still apply.
