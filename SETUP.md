@@ -305,7 +305,7 @@ reserve no centre slots and may fall outside centre operating hours. Lesson
 creation remains on the website.
 
 
-## Stringing reminders setup — awaiting deployment and supervised activation
+## Stringing reminders setup — scheduler setup required
 
 Deploy the matching application, forward migrations and customer workspace before
 using this in production. Existing tokens inherit `stringing-reminders:manage` from

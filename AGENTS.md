@@ -201,7 +201,7 @@ reserve no centre slots and may fall outside centre operating hours. Lesson
 creation remains on the website.
 
 
-## Stringing reminders — awaiting deployment and supervised activation
+## Stringing reminders — scheduler setup required
 
 Use `tzh-stringing-reminders` and the four list/prepare/finish/create-feedback-request
 tools. Require `stringing-reminders:manage` and a live active administrator. The
