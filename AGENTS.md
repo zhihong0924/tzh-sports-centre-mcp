@@ -246,3 +246,10 @@ failures. Standing approval covers matching scheduled scope; token access alone
 never authorizes sending. Report counts/minimal IDs and partial coverage, not private
 content. No SQL/source/internal HTTP/shell fallback, financial/progress edits,
 feedback submission, template/language changes or unrequested schedule activation.
+
+## Phone-based discovery
+
+A phone search result is a candidate, not proof of account identity or country.
+Prefer a complete international number when known, retain returned stable IDs,
+and ask the administrator to choose when multiple contacts match. Never invent a
+country code for an ambiguous older number or select an account by suffix alone.

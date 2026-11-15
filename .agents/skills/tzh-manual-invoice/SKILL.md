@@ -79,3 +79,13 @@ no automatic email outbox retry.
 The older `preview_non_member_invoice`/`commit_non_member_invoice` names remain
 for existing non-member workflows. Use the shared tools for new work. Never send
 a member token to the legacy non-member commit tool.
+
+## Phone lookup compatibility preview — awaiting deployment
+
+Student, point-member and invoice-member searches are being enhanced to accept
+formatted international numbers and local national-number suffixes. Prefer the
+full `+` number when known. A local suffix can match several countries/accounts;
+confirm the intended returned stable ID before any preview or write. If no
+match is returned on the deployed server, refine by name/email through the same
+MCP tool. Never invent a missing country code or bypass the MCP connection.
+No new tool, argument, credential or permission is needed.
