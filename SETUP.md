@@ -343,8 +343,11 @@ hours only for a sending session; preparation checks this gate. Ordinary dry run
 only list candidates and never open WhatsApp or record sent status.
 
 For a supervised test, use an owner-controlled recipient and eligible fictional
-job. Prepare fresh, privately verify destination and exact generated message, send
-through the approved WhatsApp UI, observe the corresponding new outgoing message,
+job. Prepare fresh, open the returned `whatsappUrl` unchanged in the connected
+browser, and follow **Open app / Open WhatsApp** into the approved desktop app
+(or **Continue to WhatsApp Web** for an approved Web session). Verify the intended
+recipient and exact prefilled text before sending. Observe the exact new outgoing
+message in that chat itself,
 then call `mark_stringing_reminder_sent({ jobId, stage, confirm:true })`. Verify the
 existing website sent status and, for restring, completed reminder. Do not expose
 phones/messages/feedback links in logs, screenshots or summaries. No real customer
@@ -370,8 +373,20 @@ and restring. Run one sender, at most APPROVED_LIMIT (maximum 20) messages and o
 job per customer per run. Scan up to five pages of 50 per stage; report partial
 coverage. Respect existing sent flags and all returned skip reasons. Create a
 missing due feedback request once if authorized. Prepare immediately before sending;
-use the exact returned message/link and verify the recipient. Send once, observe
-the new outgoing message, then mark that job/stage sent. Leave status unchanged if
+pass the prepared whatsappUrl directly as the authorized browser navigation
+argument. Necessary MCP results and browser/computer tool arguments are allowed;
+keep private fields out of reports, screenshots and unnecessary diagnostic logs.
+Separate tool runtimes need no shared variables or private-transfer bridge. Do not
+use shell/temp files or external services to transfer messages. Open the returned
+whatsappUrl unchanged in the connected browser and follow the
+Open app/Open WhatsApp handoff (or Continue to WhatsApp Web for approved Web use).
+Verify the intended recipient and exact prefilled text. Do not search numbers,
+rebuild URLs or type/paste messages as an automatic alternative. Stop and report
+blocked handoff, sign-in or missing/mismatched drafts; only an explicit owner choice
+permits a manual alternative. Never bypass denied permissions. Send once and observe
+the exact new outgoing message in that chat itself, then mark that job/stage sent.
+Chat-list previews and an empty composer alone are insufficient. Inspect uncertain
+sends before retrying; do not click Send again just because verification failed. Leave status unchanged if
 not sent or not observed. The owner accepts possible duplicates after a lost
 acknowledgement. Report counts/minimal job references, never private content.
 Do not change business data, templates, language or schedules outside this request.

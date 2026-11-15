@@ -218,7 +218,20 @@ create saved policies or change schedules. No customer pause setting exists.
 
 Use list → fresh preparation → approved WhatsApp UI send → finish with
 `{ jobId, stage, confirm:true }` after observing the new outgoing message in the
-verified chat. Use the exact website-template text/link. Existing sent flags are
+verified chat. Pass the prepared whatsappUrl directly as an authorized browser tool argument;
+necessary MCP results and browser/computer arguments are permitted. Keep private
+fields out of user-facing reports, screenshots and extra diagnostic logs. Separate
+runtimes need no shared variables or private bridge; do not use shell/temp files
+or external services to transfer messages. Report actual tool/handoff failures.
+Open the returned `whatsappUrl` unchanged in the connected browser, follow its
+Open app/Open WhatsApp handoff and verify the intended chat and prefilled text.
+Do not search numbers or enter messages as an automatic alternative. Stop and
+report blocked handoff, sign-in or missing/mismatched drafts. An explicit owner
+choice is needed for a manual alternative; never bypass denied permissions.
+Observe the exact new outgoing message in the chat itself before marking sent;
+a chat-list preview or empty composer alone is insufficient. Inspect uncertain
+sends before retrying; do not click Send again just because verification failed.
+Existing sent flags are
 the only completion truth; retries preserve the first sent timestamp. Feedback is
 once, three days after collection, pickup requires Ready and restring uses its saved
 due date. Create a missing due feedback request explicitly; never replace a revoked
