@@ -38,6 +38,10 @@ MCP server. These rules apply to every task started from this folder.
 - For lesson duration or per-student price changes, use the
   `tzh-lesson-management` skill and follow its stable-ID discovery,
   full-batch preview, and explicit-confirmation workflow.
+- For class-today WhatsApp reminders after the matching release, use
+  `tzh-lesson-reminders`: saved website wording, fresh MCP preparation, verified
+  WhatsApp handoff/send, then enrollment-scoped sent recording. See `SETUP.md`
+  for availability and setup; token access alone never authorizes sending.
 - For lesson attendance history or the completed-lesson review queue, use the
   `tzh-lesson-attendance` skill and its read-only Malaysia-time query workflow.
 - For current administrator work due today, tomorrow, or this week, use the

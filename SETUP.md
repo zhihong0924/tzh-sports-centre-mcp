@@ -14,6 +14,8 @@ tzh-sports-centre-mcp/
         │   └── SKILL.md
         ├── tzh-lesson-management/
         │   └── SKILL.md
+        ├── tzh-lesson-reminders/  (awaiting deployment)
+        │   └── SKILL.md
         ├── tzh-lesson-attendance/
         │   └── SKILL.md
         ├── tzh-admin-attention/
@@ -402,3 +404,56 @@ confirm the intended returned stable ID before any preview or write. If no
 match is returned on the deployed server, refine by name/email through the same
 MCP tool. Never invent a missing country code or bypass the MCP connection.
 No new tool, argument, credential or permission is needed.
+
+## Today's lesson reminders — awaiting deployment
+
+After the lesson-template migration and server release, copy the
+`tzh-lesson-reminders` skill into the client workspace and refresh MCP discovery.
+Use **Lesson management** (`lessons:manage`) on an active admin's token. That
+permission additionally allows private student contact/message preparation and
+recording sent reminders; review existing token holders before rollout. No new
+permission or automatic token grant is introduced.
+
+Discover `list_lesson_reminders`, `prepare_lesson_reminder` and
+`mark_lesson_reminder_sent`. Missing tools are a release/connection problem, not
+permission to use SQL, source, scripts or internal HTTP as a fallback.
+
+1. Admin → WhatsApp Reminders → **Edit lesson reminder templates** opens
+   `/admin/whatsapp-reminders`. Save the EN/ZH/MS wording and review the fictional
+   preview. Message language is independent of interface language.
+2. The owner configures the independent lesson enabled/contact-hours gate on the
+   server. Agree on the scheduler's language, time, authorized recipients, WhatsApp
+   application and cap (at most 20 sends per run). Use one sender across reminder
+   schedules. No schedule is installed or activated by editing templates.
+3. After deployment, run the first supervised test with an owner-controlled
+   recipient on a fictional enrollment in a class today that has not started.
+   List, prepare, open the unchanged link, verify chat/prefill, send, observe the
+   exact outgoing message, then mark sent with `confirm:true`.
+4. Verify that another discovery/preparation skips the recorded enrollment.
+   Only then activate the owner-approved schedule. Student absence, cancellation,
+   started classes and invalid contacts must not receive reminders.
+
+Read-only connection check:
+
+```text
+Use $tzh-lesson-reminders and list today's lesson reminders. Do not prepare,
+open WhatsApp, send, mark sent or change a schedule. Report counts and skip reasons.
+```
+
+Example scheduler prompt, after supervised acceptance and explicit activation:
+
+```text
+Use $tzh-lesson-reminders to remind eligible students about today's class in
+Asia/Kuala_Lumpur, using the saved English template. I authorize matching reminder
+sends through our approved WhatsApp session and recording observed sends. Run one
+sender at a time and send at most 20 messages. Page discovery and prepare each
+enrollment freshly immediately before sending. Stop on login, permission, handoff
+or recipient/text mismatch. Inspect uncertain sends before retrying. Report sent,
+skipped, failed and deferred counts without private contact/message/link details.
+```
+
+This is a class reminder, not a lesson-fee reminder. Registered students use their
+account phone; guests use their enrollment phone. Billing/guardian contacts are
+not automatically substituted. One observed send is recorded per enrollment,
+regardless of selected language. A send with a lost acknowledgement can duplicate
+on a later run; there is no reservation or delivery/read confirmation.
