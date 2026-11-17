@@ -40,7 +40,9 @@ MCP server. These rules apply to every task started from this folder.
   full-batch preview, and explicit-confirmation workflow.
 - For class-today WhatsApp reminders after the matching release, use
   `tzh-lesson-reminders`: saved website wording, fresh MCP preparation, verified
-  WhatsApp handoff/send, then enrollment-scoped sent recording. See `SETUP.md`
+  WhatsApp handoff/send, then enrollment-scoped sent recording. Batch all eligible
+  unsent classes today within approved scope/caps; do not wait for a per-class due
+  time or deduplicate separate classes by student/phone. See `SETUP.md`
   for availability and setup; token access alone never authorizes sending.
 - For lesson attendance history or the completed-lesson review queue, use the
   `tzh-lesson-attendance` skill and its read-only Malaysia-time query workflow.
@@ -257,3 +259,18 @@ A phone search result is a candidate, not proof of account identity or country.
 Prefer a complete international number when known, retain returned stable IDs,
 and ask the administrator to choose when multiple contacts match. Never invent a
 country code for an ambiguous older number or select an account by suffix alone.
+
+## Lesson reminder website entry
+
+For the upcoming lesson-reminder release, administrators edit wording at
+**Admin → WhatsApp Reminders → Class reminders** (`/admin/reminders`).
+**Lesson fees** is the independent CSV workflow. The old template URL redirects
+to the workspace. This navigation change grants no sending or schedule authority;
+follow `SETUP.md` and `tzh-lesson-reminders` for the existing acceptance steps.
+
+## Reminder scheduler setup prompts
+
+Owner-requested scheduler setup can start from the two examples under `prompts/`,
+linked in `SETUP.md`. Collect timing/stage choices before activation, use the host's
+Automations tools and update matching schedules instead of creating duplicates.
+Server enable/contact-hours gates and verified WhatsApp setup remain prerequisites.

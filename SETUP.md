@@ -418,8 +418,9 @@ Discover `list_lesson_reminders`, `prepare_lesson_reminder` and
 `mark_lesson_reminder_sent`. Missing tools are a release/connection problem, not
 permission to use SQL, source, scripts or internal HTTP as a fallback.
 
-1. Admin → WhatsApp Reminders → **Edit lesson reminder templates** opens
-   `/admin/whatsapp-reminders`. Save the EN/ZH/MS wording and review the fictional
+1. Admin → WhatsApp Reminders → **Class reminders** opens the editor directly
+   at `/admin/reminders`. The old `/admin/whatsapp-reminders` URL redirects there;
+   **Lesson fees** is separate CSV preparation. Save the EN/ZH/MS wording and review the fictional
    preview. Message language is independent of interface language.
 2. The owner configures the independent lesson enabled/contact-hours gate on the
    server. Agree on the scheduler's language, time, authorized recipients, WhatsApp
@@ -444,7 +445,11 @@ Example scheduler prompt, after supervised acceptance and explicit activation:
 
 ```text
 Use $tzh-lesson-reminders to remind eligible students about today's class in
-Asia/Kuala_Lumpur, using the saved English template. I authorize matching reminder
+Asia/Kuala_Lumpur, using the saved English template. Process all eligible unsent
+enrollments for today in this run, even if class is hours away. Do not wait for a
+per-class due time or lead-time window. Send a separate reminder for each class
+enrollment, including multiple classes for one student. Skip every non-null
+skipReason, including started classes. I authorize matching reminder
 sends through our approved WhatsApp session and recording observed sends. Run one
 sender at a time and send at most 20 messages. Page discovery and prepare each
 enrollment freshly immediately before sending. Stop on login, permission, handoff
@@ -457,3 +462,12 @@ account phone; guests use their enrollment phone. Billing/guardian contacts are
 not automatically substituted. One observed send is recorded per enrollment,
 regardless of selected language. A send with a lost acknowledgement can duplicate
 on a later run; there is no reservation or delivery/read confirmation.
+
+## Copy-and-paste scheduler setup prompts
+
+Use the [stringing setup prompt](prompts/setup-stringing-reminder-scheduler.md)
+or [daily lesson setup prompt](prompts/setup-lesson-reminder-scheduler.md) in the
+updated customer workspace after the matching server release. These collect run
+and follow-up timing interactively, check existing schedules and avoid overlapping
+senders. They require server preparation gates and supervised WhatsApp readiness
+before activating a schedule. They do not enable server contact hours themselves.

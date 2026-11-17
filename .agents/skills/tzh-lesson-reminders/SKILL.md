@@ -17,7 +17,11 @@ activate/change schedules or templates without a request.
    Today is server-resolved in `Asia/Kuala_Lumpur`. Preserve enrollment IDs and
    opaque cursors. Skip every non-null `skipReason`. Scan up to five pages, send
    at most the approved cap (maximum 20), and report deferred/partial coverage.
-   Multiple classes for one student have separate enrollments.
+   Process all eligible unsent enrollments for today in this run within the
+   approved scope/cap, even when class is hours away. Do not invent per-class due
+   times or a lead-time window, or wait until a class is nearly starting. Multiple
+   classes for one student require separate reminders per enrollment; do not
+   deduplicate by student or phone. Started classes remain skipped.
 2. Immediately before each approved send, call `prepare_lesson_reminder` with its
    enrollment ID and approved `language` (`en`, `zh`, `ms`; default `en`). It reads
    the latest saved website wording, recipient, venue and eligibility. Never
@@ -48,4 +52,5 @@ Use one sender at a time across reminder schedules. Overlap or a lost send
 acknowledgement can duplicate messages; there is no reservation or exactly-once
 promise. Report sent/skipped/failed/deferred counts and minimal private identifiers
 only when needed. Do not change attendance, payments or enrollments. Website
-editing and supervised setup are in `SETUP.md`.
+editing is **Admin → WhatsApp Reminders → Class reminders** at `/admin/reminders`;
+**Lesson fees** is the independent CSV tool. Supervised setup remains in `SETUP.md`.
