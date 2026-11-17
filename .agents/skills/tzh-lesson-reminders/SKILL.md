@@ -6,8 +6,9 @@ description: Find today's eligible lesson enrollments, prepare saved website-tem
 # Today's class reminders
 
 Requires the matching deployed three-tool contract on `tzh_sports_centre`, an
-active administrator and `lessons:manage`. This skill is prepared for an upcoming
-release: confirm discovery before use. Missing tools/permissions are reported;
+active administrator and `lessons:manage`. The matching server release is deployed;
+refresh discovery before use. Server enable/contact hours and supervised WhatsApp
+setup remain prerequisites. Missing tools/permissions are reported;
 never fall back to SQL, Prisma, source, shell or internal HTTP. No Cloud API calls.
 Token access alone does not authorize messages. Respect the owner's explicit or
 standing approved recipients, language, template and schedule scope; do not

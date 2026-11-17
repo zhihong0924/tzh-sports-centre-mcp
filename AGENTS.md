@@ -262,7 +262,7 @@ country code for an ambiguous older number or select an account by suffix alone.
 
 ## Lesson reminder website entry
 
-For the upcoming lesson-reminder release, administrators edit wording at
+Administrators edit lesson reminder wording at
 **Admin → WhatsApp Reminders → Class reminders** (`/admin/reminders`).
 **Lesson fees** is the independent CSV workflow. The old template URL redirects
 to the workspace. This navigation change grants no sending or schedule authority;

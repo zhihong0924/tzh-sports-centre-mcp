@@ -14,7 +14,7 @@ tzh-sports-centre-mcp/
         │   └── SKILL.md
         ├── tzh-lesson-management/
         │   └── SKILL.md
-        ├── tzh-lesson-reminders/  (awaiting deployment)
+        ├── tzh-lesson-reminders/
         │   └── SKILL.md
         ├── tzh-lesson-attendance/
         │   └── SKILL.md
@@ -405,10 +405,11 @@ match is returned on the deployed server, refine by name/email through the same
 MCP tool. Never invent a missing country code or bypass the MCP connection.
 No new tool, argument, credential or permission is needed.
 
-## Today's lesson reminders — awaiting deployment
+## Today's lesson reminders — deployed 17 November 2026
 
-After the lesson-template migration and server release, copy the
-`tzh-lesson-reminders` skill into the client workspace and refresh MCP discovery.
+The lesson-template migration and server release are deployed. Update the
+`tzh-lesson-reminders` skill in the client workspace and refresh MCP discovery.
+Server enable/contact hours and supervised WhatsApp setup are still required.
 Use **Lesson management** (`lessons:manage`) on an active admin's token. That
 permission additionally allows private student contact/message preparation and
 recording sent reminders; review existing token holders before rollout. No new
