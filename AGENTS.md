@@ -244,8 +244,12 @@ once, three days after collection, pickup requires Ready and restring uses its s
 due date. Create a missing due feedback request explicitly; never replace a revoked
 link or submit feedback. No claim/recovery tool or attempt ledger remains.
 
-Run one sender, at most 20 messages and one job per customer per run within approved
-Malaysia contact hours. Client limits are not server reservations. A lost send
+Run one sender and one job per customer per run on the client-approved Malaysia-time
+schedule. Apply only the optional client-approved cap: any positive whole number
+or explicitly no cap. There is no fixed 20-message maximum or server contact-hour
+window or enable switch for stringing. Pause its scheduler to prevent future
+runs and stop any already-running sender separately. Page discovery and report
+deferred work if a chosen cap or runtime stops the run. Client limits are not server reservations. A lost send
 acknowledgement can cause a later duplicate, as accepted by the owner. Leave sent
 status unchanged without an observed send and stop on login/permission/mismatch/UI
 failures. Standing approval covers matching scheduled scope; token access alone
@@ -273,4 +277,6 @@ follow `SETUP.md` and `tzh-lesson-reminders` for the existing acceptance steps.
 Owner-requested scheduler setup can start from the two examples under `prompts/`,
 linked in `SETUP.md`. Collect timing/stage choices before activation, use the host's
 Automations tools and update matching schedules instead of creating duplicates.
-Server enable/contact-hours gates and verified WhatsApp setup remain prerequisites.
+Verified WhatsApp setup remains a prerequisite. Lesson reminders retain their
+separate server enabled/contact-hour checks; stringing uses the client-approved
+schedule without server enable/hour settings or a fixed per-run cap.

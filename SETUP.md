@@ -336,13 +336,18 @@ Feedback remains once, three days after collection; pickup requires Ready and
 restring follows the job's pending due date. A revoked feedback link is never
 replaced automatically; create a missing due request only when explicitly needed.
 
-Agree on recipients, stages, saved EN/ZH/MS templates, Malaysia contact hours,
-WhatsApp app and at most 20 messages/one job per customer per run. Run one sender
+Agree on recipients, stages, saved EN/ZH/MS templates, the Malaysia-time schedule,
+WhatsApp app and an optional per-run cap (any positive whole number or explicitly
+no cap). Keep one job per customer per run; there is no fixed 20-message maximum. Run one sender
 at a time; limits are client instructions, not server reservations. Sign in to the
 approved WhatsApp desktop or Web session and enable connected computer/browser
-access. Token access alone does not authorize sending. Enable the existing
-`STRINGING_REMINDERS_ENABLED` setting and configure approved integer start/end
-hours only for a sending session; preparation checks this gate. Ordinary dry runs
+access. Token access alone does not authorize sending. The client-approved
+scheduler controls whether and when stringing reminders run. No server enable
+or start/end-hour settings are required; retired STRINGING_REMINDERS and
+STRINGING_OUTREACH enable/hour variables are ignored after deploying the updated
+server. Pause the scheduler to prevent future runs; stop an already-running
+sender separately. Refresh MCP discovery: enabled, contactHours, allowedNow and
+runCap are no longer returned. Ordinary dry runs
 only list candidates and never open WhatsApp or record sent status.
 
 For a supervised test, use an owner-controlled recipient and eligible fictional
@@ -367,14 +372,15 @@ Example scheduler prompt (fill and approve before activation):
 
 ```text
 Use $tzh-stringing-reminders through tzh_sports_centre for OWNER_APPROVED recipients
-and saved templates within APPROVED_MALAYSIA_HOURS using APPROVED_WHATSAPP_APP.
+and saved templates on APPROVED_MALAYSIA_SCHEDULE using APPROVED_WHATSAPP_APP.
 For payment_first use waitingDays 2, measured from receipt; for payment_second use
 waitingDays 4, measured from first recorded send. These are this schedule's admin
 settings, not website settings. Skip any stage not approved here. Use the same
 waitingDays for each stage's list and prepare calls. Omit it for ready, feedback
-and restring. Run one sender, at most APPROVED_LIMIT (maximum 20) messages and one
-job per customer per run. Scan up to five pages of 50 per stage; report partial
-coverage. Respect existing sent flags and all returned skip reasons. Create a
+and restring. Run one sender and one job per customer per run. Apply only the
+client-approved optional cap (a positive whole number or explicitly no cap); do
+not impose a fixed maximum of 20. Page discovery in batches of up to 50 until
+complete or the approved cap/runtime is reached; report deferred coverage. Respect existing sent flags and all returned skip reasons. Create a
 missing due feedback request once if authorized. Prepare immediately before sending;
 pass the prepared whatsappUrl directly as the authorized browser navigation
 argument. Necessary MCP results and browser/computer tool arguments are allowed;

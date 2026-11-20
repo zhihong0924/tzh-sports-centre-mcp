@@ -30,21 +30,26 @@ new scan with no cursor. There are no policy tools or customer pause settings.
 ## Find, prepare, send and mark sent
 
 1. Confirm approved recipients, stages and saved templates (including each
-   customer's own job/payment details), timing, schedule, Malaysia contact hours,
-   WhatsApp app and cap. Standing approval covers matching scheduled sends; ask
+   customer's own job/payment details), timing, the Malaysia-time schedule, WhatsApp app and an optional cap
+   (any positive whole number or explicitly no cap). Reuse choices and successful
+   supervised setup already confirmed for the approved session; ask only for
+   missing or changed facts. Standing approval covers matching scheduled sends; ask
    again only for changed/out-of-scope recipients/content. First setup uses an
    owner-controlled recipient and an eligible fictional job.
 2. Run one sender at a time. List each approved stage using the correct waitingDays
-   above. Scan up to five pages of 50 per stage and preserve cursors. Report partial
-   coverage. Send at most the approved limit (maximum 20) and one job per customer
-   per run. These are client limits, not server reservations.
+   above. Page each stage in batches of up to 50 and preserve cursors until complete
+   or the client-approved cap/runtime is reached. Report deferred coverage. Apply
+   only the client-approved optional cap, with no fixed maximum of 20, and one job
+   per customer per run. The client-approved schedule controls sending time;
+   stringing has no server enable switch or contact-hour window. Pause the
+   scheduler to stop future runs; stop any already-running sender separately. These are client limits, not server reservations.
 3. Respect existing sent flags and all skip reasons. Pickup requires Ready;
    feedback is once, three days after collection while unanswered and unsent;
    restring uses the job's pending due date. For an explicitly needed missing due
    feedback request, call `create_stringing_feedback_request` with a stable
    UUID request key and confirm:true. Never replace a revoked link or submit feedback.
 4. Immediately before sending, prepare the job/stage with the appropriate timing.
-   This checks enabled/contact hours and returns the exact website-template message
+   This checks current eligibility and returns the exact website-template message
    and WhatsApp link in the saved customer language. Verify destination and text
    privately. Do not rewrite messages, change templates/language, substitute a
    recipient or invent a feedback URL. Never expose private content in logs,
