@@ -274,9 +274,11 @@ follow `SETUP.md` and `tzh-lesson-reminders` for the existing acceptance steps.
 
 ## Reminder scheduler setup prompts
 
-Owner-requested scheduler setup can start from the two examples under `prompts/`,
-linked in `SETUP.md`. Collect timing/stage choices before activation, use the host's
-Automations tools and update matching schedules instead of creating duplicates.
-Verified WhatsApp setup remains a prerequisite. Lesson reminders retain their
-separate server enabled/contact-hour checks; stringing uses the client-approved
-schedule without server enable/hour settings or a fixed per-run cap.
+Use the setup prompts linked in `SETUP.md` with Codex Automations and update a
+matching schedule when one exists. The stringing setup prompt supplies the full
+settings and exact run prompt for the owner-approved daily 9:00 a.m. Malaysia
+schedule. For that automation, use the chat opened by the unchanged MCP link
+as the destination and compare the exact draft before sending. Other stringing
+setups follow their own approved settings. Verified WhatsApp setup remains a
+prerequisite. The lesson setup prompt collects its own timing and follows the
+separate lesson server gates.

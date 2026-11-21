@@ -472,9 +472,13 @@ on a later run; there is no reservation or delivery/read confirmation.
 
 ## Copy-and-paste scheduler setup prompts
 
-Use the [stringing setup prompt](prompts/setup-stringing-reminder-scheduler.md)
-or [daily lesson setup prompt](prompts/setup-lesson-reminder-scheduler.md) in the
-updated customer workspace after the matching server release. These collect run
-and follow-up timing interactively, check existing schedules and avoid overlapping
-senders. They require server preparation gates and supervised WhatsApp readiness
-before activating a schedule. They do not enable server contact hours themselves.
+- Paste the full [stringing setup prompt](prompts/setup-stringing-reminder-scheduler.md)
+  into Codex in the local TZH MCP workspace to create or update the owner-approved
+  daily 9:00 a.m. Malaysia-time automation. It uses all five stages, a one-day wait
+  for each payment stage, one job per customer per run and no overall message cap.
+  For this automation, the unchanged MCP link opens the intended chat in approved
+  WhatsApp Web and the agent compares the exact draft before sending.
+- Use the [daily lesson setup prompt](prompts/setup-lesson-reminder-scheduler.md)
+  for the separate lesson workflow, timing choices and server gates.
+
+Both workflows require supervised WhatsApp readiness before activation.

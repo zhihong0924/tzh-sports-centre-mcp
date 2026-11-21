@@ -70,7 +70,13 @@ new scan with no cursor. There are no policy tools or customer pause settings.
    confirmation is inaccessible, report it for the owner to complete; do not
    silently switch destinations. The link supplies recipient and draft: do not rebuild it,
    search the number or type/paste the message as an automatic alternative.
-   Verify the intended recipient and exact prefilled text before clicking Send.
+   Verify the intended chat and exact prefilled text before clicking Send.
+   For the owner-approved automation installed with the
+   [stringing scheduler setup prompt](../../../prompts/setup-stringing-reminder-scheduler.md),
+   the chat opened by the unchanged MCP link in the approved WhatsApp Web session
+   establishes the destination. Compare the composer character for character
+   with the fresh MCP message. Follow its saved approval for manual, delayed and
+   catch-up runs and defer if another sender is using the session.
    If the browser/app handoff is blocked, sign-in is needed, or the draft is
    missing/mismatched, stop and report the step; only an explicit owner choice
    permits a manual alternative. Never bypass a denied permission.
